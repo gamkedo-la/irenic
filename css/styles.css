@@ -1,0 +1,17 @@
+body {
+    background: #000;
+    overflow: hidden;
+    font-family: Verdana, sans-serif;
+}
+
+#gameCanvas {
+    display: block;
+    position: relative;
+    /* Old skool centering... */
+    left: 50%;
+    margin-left: -300px;
+
+    border: outset 3px #ccc;
+    padding: 2px;
+    background: #333;
+}
