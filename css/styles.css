@@ -1,17 +1,25 @@
-body {
-    background: #000;
-    overflow: hidden;
-    font-family: Verdana, sans-serif;
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#gameCanvas {
-    display: block;
-    position: relative;
-    /* Old skool centering... */
-    left: 50%;
-    margin-left: -300px;
+body {
+    background: #000;
+    font-family: Verdana, sans-serif;
+    overflow: hidden;
+}
 
-    border: outset 3px #ccc;
-    padding: 2px;
-    background: #333;
+#drawCanvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#gameDiv {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }

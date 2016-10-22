@@ -13,7 +13,9 @@ const TIMEOUT_IS_MATCH = 700;
 const TIMEOUT_NO_MATCH = 1200;
 const TIMEOUT_WON_GAME = 2000;
 
+var drawCanvas, drawContext;
 var gameCanvas, gameContext;
+
 var gameFontHuge = '50pt Verdana';
 var gameFont = 'bold 20pt Verdana';
 var gameFontSmall = '16pt Verdana';
@@ -37,9 +39,11 @@ var matchesToFind = 0;
 // Debug
 var debug = true;
 
-window.onload = function () {
+window.onload = function() {
   gameCanvas = document.getElementById('gameCanvas');
   gameContext = gameCanvas.getContext('2d');
+
+  initDrawingCanvas();
 
   Images.initialize(gameInitialize);
 };
@@ -70,6 +74,7 @@ function winGame() {
 
 function gameLoop() {
   var time = Date.now() - lastRender;
+
   Grid.update(time);
   Particles.update(time);
 
@@ -83,7 +88,7 @@ function gameLoop() {
       screenShakeAmount *= 0.95;
     }
 
-    gameContext.translate(Math.random()*screenShakeAmount-screenShakeAmount*0.5, Math.random()*screenShakeAmount-screenShakeAmount*0.5);
+    gameContext.translate(Math.random() * screenShakeAmount - screenShakeAmount * 0.5, Math.random() * screenShakeAmount - screenShakeAmount * 0.5);
 
     if (screenShakeAmount <= 0.02) {
       screenShakeAmount = 0;
@@ -95,6 +100,8 @@ function gameLoop() {
   Particles.draw(time);
 
   gameContext.restore();
+
+  redrawCanvas();
 
   requestNextAnimationFrame(gameLoop);
 }

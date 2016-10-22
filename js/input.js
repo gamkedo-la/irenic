@@ -1,15 +1,13 @@
 function setupInput() {
-  gameCanvas.addEventListener('mousemove', this.updateMousePosition);
-  gameCanvas.addEventListener('mousedown', this.clickOrTouch);
-  gameCanvas.addEventListener('touchstart', this.clickOrTouch);
+  drawCanvas.addEventListener('mousemove', this.updateMousePosition);
+  drawCanvas.addEventListener('mousedown', this.clickOrTouch);
+  drawCanvas.addEventListener('touchstart', this.clickOrTouch);
 }
 
 function setMousePos(posX, posY) {
-  var rect = gameCanvas.getBoundingClientRect();
-  var root = document.documentElement;
+  var rect = drawCanvas.getBoundingClientRect();
 
-  mouse.x = posX - rect.left - root.scrollLeft;
-  mouse.y = posY - rect.top - root.scrollTop;
+  mouse = scaleCoordinates(posX - rect.left, posY - rect.top);
 }
 
 function updateMousePosition(event) {
