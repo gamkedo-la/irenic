@@ -1,17 +1,47 @@
+var gameModes = [];
+const GAME_NORMAL = 1;
+
+gameModes[GAME_NORMAL] = {
+  numTileTypes: 20,
+  extraTiles: 0,
+  gravityType: false
+};
+
 var Grid = new (function() {
   var numTiles = GRID_ROWS * GRID_COLS;
+  var tile1, tile2;
   var tiles = [];
+  var extraTiles = [];
+  var gameMode;
 
-  this.reset = function() {
-    // Clear out old tiles and find some new ones.
-    var candidate;
-    tiles = [];
-    while (tiles.length < numTiles) {
-      candidate = Math.floor(Math.random() * NUM_SPRITES);
-      tiles.push(new Tile(candidate), new Tile(candidate));
+  this.start = function(_gameMode) {
+    if (_gameMode && gameModes[_gameMode]) {
+      gameMode = gameModes[_gameMode];
+    }
+    else {
+      gameMode = gameModes[GAME_NORMAL];
     }
 
-    matchesToFind = tiles.length / 2;
+    // Clear out old tiles and find some new ones.
+    tiles = [];
+    var tileTypes = [];
+    for (var t = 0; t < gameMode.numTileTypes; t++) {
+      tileTypes.push(Math.floor(Math.random() * NUM_SPRITES));
+    }
+
+    var candidate;
+    while (tiles.length < numTiles) {
+      candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
+      tiles.push(new Tile(candidate), new Tile(candidate));
+    }
+    if (gameMode.extraTiles) {
+      while (extraTiles.length < gameMode.extraTiles) {
+        candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
+        extraTiles.push(new Tile(candidate), new Tile(candidate));
+      }
+    }
+
+    matchesToFind = (tiles.length + extraTiles.length) / 2;
 
     this.shuffle();
 
@@ -44,7 +74,7 @@ var Grid = new (function() {
   };
 
   this.update = function(time) {
-    var checkForValidPair = false;
+    var updateTilePositions = false;
     for (var i = numTiles - 1; i >= 0; i--) {
       if (!tiles[i]) {
         continue;
@@ -53,15 +83,23 @@ var Grid = new (function() {
       tiles[i].update(time);
       if (tiles[i].readyToRemove) {
         tiles[i] = false;
-        checkForValidPair = true;
+        updateTilePositions = true;
       }
     }
 
-    if (checkForValidPair) {
+    if (updateTilePositions) {
+      this.updateGravity();
       if (!this.hasValidPair()) {
         this.shuffle();
       }
     }
+  };
+
+  this.updateGravity = function() {
+    if (!gameMode.gravityType) {
+      return false;
+    }
+    // @todo add gravity stuff
   };
 
   this.draw = function(time) {
@@ -86,8 +124,6 @@ var Grid = new (function() {
 
     tiles[i].readyToRemove = true;
   };
-
-  var tile1, tile2;
 
   function resetTouchedTiles() {
     if (tile1) {

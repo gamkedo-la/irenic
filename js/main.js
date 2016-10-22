@@ -3,7 +3,7 @@ const TILE_HEIGHT = 55;
 const TILE_GAP = 2;
 
 // 13x13 fills the whole board
-const GRID_COLS = 13;
+const GRID_COLS = 14;
 const GRID_ROWS = 13;
 
 const NUM_SPRITES = 42;
@@ -46,7 +46,7 @@ window.onload = function () {
 
 function gameInitialize() {
   setupInput();
-  Grid.reset();
+  Grid.start(GAME_NORMAL);
   lastRender = Date.now();
   requestNextAnimationFrame(gameLoop);
 }
@@ -63,8 +63,9 @@ function countdownTime(duration) {
 function winGame() {
   // @todo do something else..
   alert('you won!');
-  Grid.reset();
   Particles.clear();
+  // @todo activate menu
+  Grid.reset(GAME_NORMAL);
 }
 
 function gameLoop() {
