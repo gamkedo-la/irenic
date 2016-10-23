@@ -47,3 +47,6 @@ document.onselectstart = function() {
 document.onmousedown = function() {
   window.getSelection().removeAllRanges();
 };
+document.oncontextmenu = function() {
+  return false;
+};

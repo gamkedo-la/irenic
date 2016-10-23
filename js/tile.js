@@ -31,8 +31,12 @@ var Tile = function(index) {
     return this;
   };
 
-  this.update = function(time) {
-    this.readyToRemove = this.readyToRemove || (this.matching > 0 && this.matching < time);
+  this.update = function(delta) {
+    if (0 < this.matching) {
+      this.matching -= delta;
+    }
+
+    this.readyToRemove = this.readyToRemove || (this.matching < 0);
   };
 
   this.draw = function() {
@@ -67,6 +71,6 @@ var Tile = function(index) {
 
   this.match = function() {
     // @todo removal particle/animation
-    this.matching = countdownTime(TIMEOUT_IS_MATCH);
+    this.matching = 500;
   };
 };

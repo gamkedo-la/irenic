@@ -5,18 +5,18 @@ var Particles = new (function() {
     list.push(item);
   };
 
-  this.update = function(time) {
+  this.update = function(delta) {
     for (var i = list.length - 1; i >= 0; i--) {
-      list[i].update(time);
+      list[i].update(delta);
       if (list[i].readyToRemove) {
         list.splice(i, 1);
       }
     }
   };
 
-  this.draw = function(time) {
+  this.draw = function(interpolationPercentage) {
     for (var i = 0; i < list.length; i++) {
-      list[i].draw(time);
+      list[i].draw(interpolationPercentage);
     }
   };
 
@@ -28,7 +28,8 @@ var Particles = new (function() {
 var ParticleLine = function(points, color) {
   this.readyToRemove = false;
 
-  var spawnTime = Date.now();
+  var maxAge = 800;
+  var age = 0;
 
   if (!color) {
     color = '#0f0';
@@ -38,7 +39,12 @@ var ParticleLine = function(points, color) {
     points[i].y = points[i].row * (TILE_HEIGHT + TILE_GAP) + Math.round(TILE_HEIGHT / 2);
   }
 
-  this.draw = function(time) {
+  this.update = function(delta) {
+    age += delta;
+    this.readyToRemove = (maxAge <= age);
+  };
+
+  this.draw = function(interpolationPercentage) {
     gameContext.beginPath();
     gameContext.moveTo(points[0].x, points[0].y);
     for (var i = 0; i < points.length; i++) {
@@ -47,9 +53,5 @@ var ParticleLine = function(points, color) {
     gameContext.strokeStyle = color;
     gameContext.lineWidth = 5;
     gameContext.stroke();
-  };
-
-  this.update = function(time) {
-    this.readyToRemove = Date.now() - spawnTime > 1000;
   };
 };

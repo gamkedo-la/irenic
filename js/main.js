@@ -28,9 +28,6 @@ var mouse = {
   y: 0
 };
 
-// @todo use https://github.com/IceCreamYou/MainLoop.js
-var lastRender;
-
 var screenShakeAmount = 0;
 var screenShakeAmountHalf = 0;
 
@@ -48,20 +45,20 @@ window.onload = function() {
   Images.initialize(gameInitialize);
 };
 
-function gameInitialize() {
+function gameInitialize(gameMode) {
   setupInput();
-  Grid.start(GAME_NORMAL);
-  lastRender = Date.now();
-  requestNextAnimationFrame(gameLoop);
+  Grid.start(gameMode || GAME_NORMAL);
+
+  MainLoop
+    .setMaxAllowedFPS(30)
+    .setUpdate(gameUpdate)
+    .setDraw(gameDraw)
+    .start();
 }
 
 function shakeScreen(amount) {
   screenShakeAmountHalf = amount / 2;
   screenShakeAmount = amount;
-}
-
-function countdownTime(duration) {
-  return Date.now() - lastRender + duration;
 }
 
 function winGame() {
@@ -72,12 +69,12 @@ function winGame() {
   Grid.reset(GAME_NORMAL);
 }
 
-function gameLoop() {
-  var time = Date.now() - lastRender;
+function gameUpdate(delta) {
+  Grid.update(delta);
+  Particles.update(delta);
+}
 
-  Grid.update(time);
-  Particles.update(time);
-
+function gameDraw(interpolationPercentage) {
   gameContext.save();
 
   if (screenShakeAmount) {
@@ -96,12 +93,10 @@ function gameLoop() {
   }
 
   gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-  Grid.draw(time);
-  Particles.draw(time);
+  Grid.draw(interpolationPercentage);
+  Particles.draw(interpolationPercentage);
 
   gameContext.restore();
 
   redrawCanvas();
-
-  requestNextAnimationFrame(gameLoop);
 }
