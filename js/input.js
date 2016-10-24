@@ -4,14 +4,16 @@ function setupInput() {
   drawCanvas.addEventListener('touchstart', this.clickOrTouch);
 }
 
-function setMousePos(posX, posY) {
+function setMousePos(posX, posY, button) {
   var rect = drawCanvas.getBoundingClientRect();
 
   mouse = scaleCoordinates(posX - rect.left, posY - rect.top);
+
+  mouse.button = -1;
 }
 
 function updateMousePosition(event) {
-  setMousePos(event.clientX, event.clientY);
+  setMousePos(event.clientX, event.clientY, event.button);
 }
 
 function clickOrTouch(event) {
@@ -29,8 +31,9 @@ function clickOrTouch(event) {
   }
 
   setMousePos(x, y);
+  mouse.button = event.button;
 
-  if (debug && event.button == 1) {
+  if (debug && !Menu.isActive() && event.button == 1) {
     var i = Grid.coordsToArrayIndex(mouse.x, mouse.y);
     console.log('remove', i);
     Grid.removeTile(i);

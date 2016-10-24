@@ -60,9 +60,10 @@ var Grid = new (function() {
         continue;
       }
 
+      var loops = 0;
       do {
         var j = Math.floor(Math.random() * (i + 1));
-      } while (i == j || !tiles[j]);
+      } while (loops++ < 5 && (i == j || !tiles[j]));
 
       var temp = tiles[i];
       tiles[i] = tiles[j];

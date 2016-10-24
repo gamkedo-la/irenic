@@ -101,15 +101,10 @@ function drawTextAlpha(canvasContext, textX, textY, fillColor, showWords, alpha)
   canvasContext.restore();
 }
 
-function drawTextHugeCentered(text) {
-  gameContext.font = gameFontHuge;
-  gameContext.textBaseline = 'middle';
-  gameContext.textAlign = 'center';
-  drawText(gameContext, Grid.cameraPanX() + gameCanvas.width / 2, gameCanvas.height / 2, '#fff', text);
-}
-
-function drawTextBox(ctx, x, y, width, height) {
-  var cornerSize = 16;
+function _drawTextBoxBorder(ctx, x, y, width, height, cornerSize, lineWidth, fillStyle, strokeStyle) {
+  if (!cornerSize || cornerSize <= 0) {
+    cornerSize = 16;
+  }
 
   ctx.beginPath();
   ctx.moveTo(x + cornerSize, y);
@@ -126,14 +121,9 @@ function drawTextBox(ctx, x, y, width, height) {
 
   ctx.lineTo(x + cornerSize, y);
 
-  ctx.lineWidth = 4;
-  ctx.fillStyle = '#515151';
-  ctx.strokeStyle = '#878787';
+  ctx.lineWidth = lineWidth;
+  ctx.fillStyle = fillStyle;
+  ctx.strokeStyle = strokeStyle;
   ctx.stroke();
   ctx.fill();
-
-  ctx.fillStyle = '#fff';
-  ctx.textAlign = 'right';
-  ctx.font = gameFontExtraSmall;
-  ctx.fillText('Press any key...', x + width - cornerSize, y + height - 10, width);
 }

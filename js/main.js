@@ -2,9 +2,9 @@ const TILE_WIDTH = 44;
 const TILE_HEIGHT = 55;
 const TILE_GAP = 2;
 
-// 13x13 fills the whole board
-const GRID_COLS = 14;
-const GRID_ROWS = 13;
+// 14x13 fills the whole board
+const GRID_COLS = 4;
+const GRID_ROWS = 3;
 
 const NUM_SPRITES = 42;
 const SPRITE_COLS = 9;
@@ -42,15 +42,22 @@ window.onload = function() {
 
   initDrawingCanvas();
 
-  Images.initialize(gameInitialize);
+  Images.initialize(menuInitialize);
+  MainLoop.setMaxAllowedFPS(30);
 };
 
-function gameInitialize(gameMode) {
+function menuInitialize() {
   setupInput();
+  Menu.initialize();
+}
+
+function gameInitialize(gameMode) {
   Grid.start(gameMode || GAME_NORMAL);
 
+  Menu.deactivate();
+
   MainLoop
-    .setMaxAllowedFPS(30)
+    .stop()
     .setUpdate(gameUpdate)
     .setDraw(gameDraw)
     .start();
@@ -66,7 +73,7 @@ function winGame() {
   alert('you won!');
   Particles.clear();
   // @todo activate menu
-  Grid.reset(GAME_NORMAL);
+  Menu.activate();
 }
 
 function gameUpdate(delta) {
