@@ -31,3 +31,11 @@ function determineFontHeight(font) {
 
   return result;
 }
+
+function random(min, max, isFloat) {
+  if (isFloat) {
+    return Math.min(min + (Math.random() * (max - min + parseFloat('1e-' + ((Math.random() + '').length - 1)))), max);
+  }
+
+  return min + Math.floor(Math.random() * (max - min + 1));
+}
