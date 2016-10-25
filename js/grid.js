@@ -212,8 +212,8 @@ var Grid = new (function() {
       return directPath;
     }
 
-    // Direct path between the tiles
-    if (this._isClearPath(directPath[0], directPath[1])) {
+    // Direct path between the tiles on the same col or row
+    if ((_tile1.col == _tile2.col || _tile1.row == _tile2.row) && this._isClearPath(directPath[0], directPath[1])) {
       return directPath;
     }
 
