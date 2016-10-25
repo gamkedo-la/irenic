@@ -31,7 +31,13 @@ function clickOrTouch(event) {
   }
 
   setMousePos(x, y);
-  mouse.button = event.button;
+  if ((event.type == 'touchstart')) {
+    // Left click
+    mouse.button = 0;
+  }
+  else {
+    mouse.button = event.button;
+  }
 
   if (debug && !Menu.isActive() && event.button == 1) {
     var i = Grid.coordsToArrayIndex(mouse.x, mouse.y);
