@@ -11,6 +11,14 @@ if (!Object.keys) {
   };
 }
 
+function isString(obj) {
+  return (Object.prototype.toString.call(obj) === '[object String]');
+}
+
+function isArray(obj) {
+  return (Object.prototype.toString.call(obj) === '[object Array]');
+}
+
 var fontHeightCache = [];
 function determineFontHeight(font) {
   var result = fontHeightCache[font];

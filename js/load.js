@@ -1,9 +1,17 @@
 var Images = new (function() {
   var images = {
     // key: 'img/image_name.png'
-    tiles: 'img/tiles.png',
-    tiles_hover: 'img/tiles_hover.png',
-    tiles_active: 'img/tiles_active.png'
+    tiles_classic: 'img/tiles-classic.png',
+    tiles_classic_hover: 'img/tiles-classic-hover.png',
+    tiles_classic_active: 'img/tiles-classic-active.png',
+    tiles_numbers: 'img/tiles-numbers.png',
+    tiles_numbers_hover: 'img/tiles-numbers-hover.png',
+    tiles_numbers_active: 'img/tiles-numbers-active.png',
+
+    button_sound_on: 'img/button-sound-on.png',
+    button_sound_off: 'img/button-sound-off.png',
+    button_classic: 'img/button-classic.png',
+    button_numbers: 'img/button-numbers.png'
   };
 
   this.initialize = function(callback) {

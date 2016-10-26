@@ -44,14 +44,14 @@ var Tile = function(index) {
       return;
     }
 
-    var image = Images.tiles;
+    var imageName = 'tiles_' + settings['theme'];
     if (this.active || this.matching) {
-      image = Images.tiles_active;
+      imageName += '_active';
     }
     else if (this.hover()) {
-      image = Images.tiles_hover;
+      imageName += '_hover';
     }
-    gameContext.drawImage(image, this.spriteX, this.spriteY, TILE_WIDTH, TILE_HEIGHT, this.x, this.y, TILE_WIDTH, TILE_HEIGHT);
+    gameContext.drawImage(Images[imageName], this.spriteX, this.spriteY, TILE_WIDTH, TILE_HEIGHT, this.x, this.y, TILE_WIDTH, TILE_HEIGHT);
   };
 
   this.bounds = function() {

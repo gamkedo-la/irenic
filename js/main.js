@@ -23,6 +23,11 @@ var gameFontExtraSmall = '10pt Verdana';
 var fontColor = '#ddd';
 var fontColorHighlight = '#eee';
 
+var settings = {
+  sound: true,
+  theme: 'classic'
+};
+
 var mouse = {
   x: 0,
   y: 0
@@ -44,6 +49,11 @@ window.onload = function() {
 
   Images.initialize(menuInitialize);
   MainLoop.setMaxAllowedFPS(30);
+
+  var _settings = JSON.parse(localStorage.getItem('settings'));
+  if (_settings) {
+    settings = _settings;
+  }
 };
 
 function menuInitialize() {
@@ -74,6 +84,16 @@ function winGame() {
   Particles.clear();
   // @todo activate menu
   Menu.activate();
+}
+
+function setSetting(setting, value) {
+  settings[setting] = value;
+
+  if (localStorage && localStorage.setItem) {
+    localStorage.setItem('settings', JSON.stringify(settings));
+  }
+
+  return settings[setting];
 }
 
 function gameUpdate(delta) {
