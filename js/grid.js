@@ -10,6 +10,8 @@ gameModes[GAME_NORMAL] = {
 var Grid = new (function() {
   var numTiles = GRID_ROWS * GRID_COLS;
   var tile1, tile2;
+  var numValidPairs = 0;
+  var numTilesRemaining = numTiles;
   var tiles = [];
   var extraTiles = [];
   var gameMode;
@@ -56,14 +58,19 @@ var Grid = new (function() {
 
   this.shuffle = function() {
     for (var i = numTiles - 1; i > 0; i--) {
-      if (!tiles[i]) {
+      if (!tiles[i] || tiles[i].matching) {
         continue;
       }
 
       var loops = 0;
       do {
         var j = Math.floor(Math.random() * (i + 1));
-      } while (loops++ < 5 && (i == j || !tiles[j]));
+      } while (loops++ < 10 && (i == j || !tiles[j] || tiles[j].matching));
+
+      // If after 10 loops we still did not find a valid j index, skip it.
+      if (!tiles[j] || tiles[j].matching) {
+        continue;
+      }
 
       var temp = tiles[i];
       tiles[i] = tiles[j];
@@ -71,6 +78,13 @@ var Grid = new (function() {
 
       tiles[i].placeAtIndex(i);
       tiles[j].placeAtIndex(j);
+    }
+
+    if (matchesToFind > 0) {
+      numValidPairs = this.numValidPairs();
+      if (numValidPairs == 0) {
+        this.shuffle();
+      }
     }
   };
 
@@ -90,7 +104,7 @@ var Grid = new (function() {
 
     if (updateTilePositions) {
       this.updateGravity();
-      if (!this.hasValidPair()) {
+      if (numValidPairs == 0) {
         this.shuffle();
       }
     }
@@ -109,6 +123,13 @@ var Grid = new (function() {
         tiles[i].draw(time);
       }
     }
+
+    gameContext.font = gameFontSmall;
+    gameContext.textAlign = 'right';
+    drawText(gameContext, 180, 10, fontColor, 'Valid pairs');
+    drawText(gameContext, 180, 30, fontColor, 'Tiles remaining');
+    drawText(gameContext, 220, 10, fontColor, numValidPairs);
+    drawText(gameContext, 220, 30, fontColor, numTilesRemaining);
   };
 
   this.touch = function(x, y) {
@@ -163,6 +184,8 @@ var Grid = new (function() {
 
         resetTouchedTiles();
         matchesToFind--;
+        numTilesRemaining -= 2;
+        numValidPairs = this.numValidPairs();
         if (matchesToFind == 0) {
           setTimeout(function() {
             winGame();
@@ -178,24 +201,27 @@ var Grid = new (function() {
     }
   };
 
-  this.hasValidPair = function() {
-    for (var p1 = 0; p1 < tiles.length - 1; p1++) {
-      if (!tiles[p1] || tiles[p1].matching) {
+  this.numValidPairs = function() {
+    var tilesCopy = tiles.slice();
+    var numPairs = 0;
+    for (var p1 = 0; p1 < tilesCopy.length - 1; p1++) {
+      if (!tilesCopy[p1] || tilesCopy[p1].matching) {
         continue;
       }
 
-      for (var p2 = p1 + 1; p2 < tiles.length; p2++) {
-        if (!tiles[p2] || tiles[p2].matching || tiles[p1].index != tiles[p2].index) {
+      for (var p2 = p1 + 1; p2 < tilesCopy.length; p2++) {
+        if (!tilesCopy[p2] || tilesCopy[p2].matching || tilesCopy[p1].index != tilesCopy[p2].index) {
           continue;
         }
 
-        if (this.validPathBetweenTiles(tiles[p1], tiles[p2])) {
-          return true;
+        if (this.validPathBetweenTiles(tilesCopy[p1], tilesCopy[p2])) {
+          tilesCopy[p1] = tilesCopy[p2] = false;
+          numPairs++;
         }
       }
     }
 
-    return false;
+    return numPairs;
   };
 
   this.validPathBetweenTiles = function(_tile1, _tile2) {
@@ -253,9 +279,7 @@ var Grid = new (function() {
   this._generateLineSegments = function(col, row, dCol, dRow) {
     var toCol = col, toRow = row;
 
-    while (-1 < toCol && toCol < GRID_COLS &&
-    -1 < toRow && toRow < GRID_ROWS && !this.getTileAt(toCol + dCol, toRow + dRow)) {
-
+    while ((-1 < toCol && toCol < GRID_COLS) && (-1 < toRow && toRow < GRID_ROWS) && !this.isActiveTileAt(toCol + dCol, toRow + dRow)) {
       toCol += dCol;
       toRow += dRow;
     }
@@ -334,7 +358,7 @@ var Grid = new (function() {
     for (var c = minCol; c <= maxCol; c++) {
       for (var r = minRow; r <= maxRow; r++) {
         checkTile = this.getTileAt(c, r);
-        if (checkTile && checkTile != tile1 && checkTile != tile2) {
+        if (checkTile && !checkTile.matching && checkTile != tile1 && checkTile != tile2) {
           return false;
         }
       }
@@ -378,6 +402,11 @@ var Grid = new (function() {
       return tiles[index];
     }
     return false;
+  };
+
+  this.isActiveTileAt = function(col, row) {
+    var tile = this.getTileAt(col, row);
+    return tile && !tile.matching;
   };
 
   this.coordsToArrayIndex = function(x, y) {

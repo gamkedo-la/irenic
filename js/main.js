@@ -5,7 +5,7 @@ const GRID_PADDING_WIDTH = 44;
 const GRID_PADDING_HEIGHT = 100;
 
 // 14x13 fills the whole board
-const GRID_COLS = 14;
+const GRID_COLS = 2;
 const GRID_ROWS = 3;
 
 const NUM_SPRITES = 42;
