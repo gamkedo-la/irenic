@@ -16,12 +16,9 @@ const TIMEOUT_WON_GAME = 2000;
 var drawCanvas, drawContext;
 var gameCanvas, gameContext;
 
-var gameFontHuge = '50pt Verdana';
-var gameFont = 'bold 20pt Verdana';
+var gameFont = '20pt Verdana';
 var gameFontSmall = '16pt Verdana';
-var gameFontExtraSmall = '10pt Verdana';
-var fontColor = '#ddd';
-var fontColorHighlight = '#eee';
+var fontColor = '#eee';
 
 var settings = {
   sound: true,

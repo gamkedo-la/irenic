@@ -195,7 +195,6 @@ var ButtonText = function(x, y, label, callback, callbackArguments) {
 
   var cornerSize = 10,
     lineWidth = 4,
-    fontColor = '#fff',
     fontColorHover = '#f00',
     fillStyle = '#555',
     strokeStyle = '#888',
