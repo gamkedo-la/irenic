@@ -20,8 +20,8 @@ var Tile = function(index) {
     this.col = Grid.indexToCol(index, GRID_COLS);
     this.row = Grid.indexToRow(index, GRID_COLS);
 
-    this.x = this.col * (TILE_WIDTH + TILE_GAP);
-    this.y = this.row * (TILE_HEIGHT + TILE_GAP);
+    this.x = this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH;
+    this.y = this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT;
 
     return this;
   };

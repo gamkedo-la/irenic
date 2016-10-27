@@ -35,8 +35,8 @@ var ParticleLine = function(points, color) {
     color = '#0f0';
   }
   for (var i = 0; i < points.length; i++) {
-    points[i].x = points[i].col * (TILE_WIDTH + TILE_GAP) + Math.round(TILE_WIDTH / 2);
-    points[i].y = points[i].row * (TILE_HEIGHT + TILE_GAP) + Math.round(TILE_HEIGHT / 2);
+    points[i].x = points[i].col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH + Math.round(TILE_WIDTH / 2);
+    points[i].y = points[i].row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + Math.round(TILE_HEIGHT / 2);
   }
 
   this.update = function(delta) {

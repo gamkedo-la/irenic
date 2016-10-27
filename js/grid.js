@@ -381,8 +381,8 @@ var Grid = new (function() {
   };
 
   this.coordsToArrayIndex = function(x, y) {
-    var col = Math.floor(x / (TILE_GAP + TILE_WIDTH));
-    var row = Math.floor(y / (TILE_GAP + TILE_HEIGHT));
+    var col = Math.floor((x - GRID_PADDING_WIDTH) / (TILE_GAP + TILE_WIDTH));
+    var row = Math.floor((y - GRID_PADDING_HEIGHT) / (TILE_GAP + TILE_HEIGHT));
 
     if (0 <= col && col < GRID_COLS && 0 <= row && row < GRID_ROWS) {
       return this.tileToIndex(col, row);

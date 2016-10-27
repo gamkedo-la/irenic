@@ -1,6 +1,8 @@
 const TILE_WIDTH = 44;
 const TILE_HEIGHT = 55;
 const TILE_GAP = 2;
+const GRID_PADDING_WIDTH = 44;
+const GRID_PADDING_HEIGHT = 55;
 
 // 14x13 fills the whole board
 const GRID_COLS = 4;
