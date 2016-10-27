@@ -4,6 +4,7 @@ var Menu = new (function() {
   var showCredits = false;
   var creditsBackButton;
   var soundToggleButton;
+  var timerToggleButton;
 
   var tiles = [];
   var tileSpawnTime = 100;
@@ -35,6 +36,7 @@ var Menu = new (function() {
 
       creditsBackButton = new ButtonText(100, 100, 'Back', buttonCredits);
       soundToggleButton = new ButtonToggle(500, 60, 'sound', true, Images.button_sound_on, Images.button_sound_off, buttonToggleSetting);
+      timerToggleButton = new ButtonToggle(550, 60, 'timer', true, Images.button_timer_on, Images.button_timer_off, buttonToggleSetting);
     }
 
     tiles = [
@@ -62,6 +64,7 @@ var Menu = new (function() {
       }
     }
     soundToggleButton.update();
+    timerToggleButton.update();
 
     for (var t = tiles.length - 1; t >= 0; t--) {
       tiles[t].update(delta);
@@ -106,6 +109,7 @@ var Menu = new (function() {
       }
     }
     soundToggleButton.draw();
+    timerToggleButton.draw();
 
     redrawCanvas();
   };

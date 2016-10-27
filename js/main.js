@@ -25,6 +25,7 @@ var fontColorHighlight = '#eee';
 
 var settings = {
   sound: true,
+  timer: true,
   theme: 'classic'
 };
 

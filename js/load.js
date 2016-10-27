@@ -10,6 +10,8 @@ var Images = new (function() {
 
     button_sound_on: 'img/button-sound-on.png',
     button_sound_off: 'img/button-sound-off.png',
+    button_timer_on: 'img/button-timer-on.png',
+    button_timer_off: 'img/button-timer-off.png',
     button_classic: 'img/button-classic.png',
     button_numbers: 'img/button-numbers.png'
   };
