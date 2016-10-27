@@ -2,10 +2,10 @@ const TILE_WIDTH = 44;
 const TILE_HEIGHT = 55;
 const TILE_GAP = 2;
 const GRID_PADDING_WIDTH = 44;
-const GRID_PADDING_HEIGHT = 55;
+const GRID_PADDING_HEIGHT = 100;
 
 // 14x13 fills the whole board
-const GRID_COLS = 4;
+const GRID_COLS = 14;
 const GRID_ROWS = 3;
 
 const NUM_SPRITES = 42;
@@ -18,8 +18,9 @@ const TIMEOUT_WON_GAME = 2000;
 var drawCanvas, drawContext;
 var gameCanvas, gameContext;
 
-var gameFont = '20pt Verdana';
-var gameFontSmall = '16pt Verdana';
+var titleFont = 'bold 40pt Steel City Comic';
+var gameFont = '20pt Steel City Comic';
+var gameFontSmall = '16pt Steel City Comic';
 var fontColor = '#eee';
 
 var settings = {
@@ -40,6 +41,22 @@ var matchesToFind = 0;
 
 // Debug
 var debug = true;
+
+// Make sure redrawCanvas is called each draw-cycle by default.
+var MainLoop_setDraw = MainLoop.setDraw;
+MainLoop.setDraw = function(fun) {
+  fun = fun || function() {};
+  return MainLoop_setDraw.call(this, function(interpolationPercentage) {
+    gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+    gameContext.font = titleFont;
+    gameContext.textBaseline = 'top';
+    gameContext.textAlign = 'center';
+    drawText(gameContext, gameCanvas.width / 2, 10, fontColor, 'Irenic');
+    fun(interpolationPercentage);
+    redrawCanvas();
+  });
+};
 
 window.onload = function() {
   gameCanvas = document.getElementById('gameCanvas');
@@ -119,11 +136,8 @@ function gameDraw(interpolationPercentage) {
     }
   }
 
-  gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
   Grid.draw(interpolationPercentage);
   Particles.draw(interpolationPercentage);
 
   gameContext.restore();
-
-  redrawCanvas();
 }

@@ -86,7 +86,6 @@ var Menu = new (function() {
       return;
     }
 
-    gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
     for (var t = 0; t < tiles.length; t++) {
       tiles[t].draw(interpolationPercentage);
     }
@@ -110,8 +109,6 @@ var Menu = new (function() {
     }
     soundToggleButton.draw();
     timerToggleButton.draw();
-
-    redrawCanvas();
   };
 
   this.isActive = function() {

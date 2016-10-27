@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'Steel City Comic';
+    src: url('fonts/steelcitycomic.eot');
+    src: local('Steel City Comic'), local('steelcitycomic'),
+        url('fonts/steelcitycomic.eot?#iefix') format('embedded-opentype'),
+        url('fonts/steelcitycomic.woff') format('woff'),
+        url('fonts/steelcitycomic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -7,7 +18,7 @@ html, body {
 
 body {
     background: #000;
-    font-family: Verdana, sans-serif;
+    font-family: Ampersand, Verdana, sans-serif;
     overflow: hidden;
 }
 
