@@ -19,6 +19,17 @@ function isArray(obj) {
   return (Object.prototype.toString.call(obj) === '[object Array]');
 }
 
+Array.prototype.unique = function() {
+  var a = [];
+  for (var i = 0, l = this.length; i < l; i++) {
+    if (a.indexOf(this[i]) === -1) {
+      a.push(this[i]);
+    }
+  }
+
+  return a;
+};
+
 var fontHeightCache = [];
 function determineFontHeight(font) {
   var result = fontHeightCache[font];

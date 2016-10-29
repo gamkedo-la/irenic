@@ -1,27 +1,5 @@
-const TILE_WIDTH = 44;
-const TILE_HEIGHT = 55;
-const TILE_GAP = 2;
-const GRID_PADDING_WIDTH = 44;
-const GRID_PADDING_HEIGHT = 100;
-
-// 14x13 fills the whole board
-const GRID_COLS = 2;
-const GRID_ROWS = 3;
-
-const NUM_SPRITES = 42;
-const SPRITE_COLS = 9;
-
-const TIMEOUT_IS_MATCH = 700;
-const TIMEOUT_NO_MATCH = 1200;
-const TIMEOUT_WON_GAME = 2000;
-
 var drawCanvas, drawContext;
 var gameCanvas, gameContext;
-
-var titleFont = 'bold 40pt Steel City Comic';
-var gameFont = '20pt Steel City Comic';
-var gameFontSmall = '16pt Steel City Comic';
-var fontColor = '#eee';
 
 var settings = {
   sound: true,
@@ -36,8 +14,6 @@ var mouse = {
 
 var screenShakeAmount = 0;
 var screenShakeAmountHalf = 0;
-
-var matchesToFind = 0;
 
 // Debug
 var debug = true;

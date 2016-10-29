@@ -1,17 +1,10 @@
-var gameModes = [];
-const GAME_NORMAL = 1;
-
-gameModes[GAME_NORMAL] = {
-  numTileTypes: 20,
-  extraTiles: 0,
-  gravityType: false
-};
-
 var Grid = new (function() {
   var numTiles = GRID_ROWS * GRID_COLS;
   var tile1, tile2;
   var numValidPairs = 0;
-  var numTilesRemaining = numTiles;
+  var numTilesRemaining = 0;
+  var numExtraRemaining = 0;
+  var matchesToFind = 0;
   var tiles = [];
   var extraTiles = [];
   var gameMode;
@@ -26,26 +19,34 @@ var Grid = new (function() {
 
     // Clear out old tiles and find some new ones.
     tiles = [];
+    extraTiles = [];
     var tileTypes = [];
     for (var t = 0; t < gameMode.numTileTypes; t++) {
       tileTypes.push(Math.floor(Math.random() * NUM_SPRITES));
     }
 
+    // @todo generate a better set of tiles; not 'completely random'
     var candidate;
     while (tiles.length < numTiles) {
       candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
       tiles.push(new Tile(candidate), new Tile(candidate));
     }
-    if (gameMode.extraTiles) {
-      while (extraTiles.length < gameMode.extraTiles) {
+    if (gameMode.extraTileRows) {
+      numExtraRemaining = gameMode.extraTileRows * GRID_COLS;
+      while (extraTiles.length < numExtraRemaining) {
         candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
         extraTiles.push(new Tile(candidate), new Tile(candidate));
       }
     }
 
-    matchesToFind = (tiles.length + extraTiles.length) / 2;
+    numExtraRemaining = extraTiles.length;
+    numTilesRemaining = tiles.length + extraTiles.length;
+    matchesToFind = (numTilesRemaining) / 2;
 
-    this.shuffle();
+    this.shuffle(tiles, true);
+    if (gameMode.extraTileRows) {
+      this.shuffle(extraTiles);
+    }
 
     var i = 0;
     for (var c = 0; c < GRID_COLS; c++) {
@@ -56,8 +57,9 @@ var Grid = new (function() {
     }
   };
 
-  this.shuffle = function() {
-    for (var i = numTiles - 1; i > 0; i--) {
+  this.shuffle = function(tiles, requirePair) {
+    var hasShuffled = false;
+    for (var i = tiles.length - 1; i > 0; i--) {
       if (!tiles[i] || tiles[i].matching) {
         continue;
       }
@@ -72,6 +74,8 @@ var Grid = new (function() {
         continue;
       }
 
+      hasShuffled = true;
+
       var temp = tiles[i];
       tiles[i] = tiles[j];
       tiles[j] = temp;
@@ -80,16 +84,16 @@ var Grid = new (function() {
       tiles[j].placeAtIndex(j);
     }
 
-    if (matchesToFind > 0) {
+    if (requirePair && matchesToFind > 0 && hasShuffled) {
       numValidPairs = this.numValidPairs();
       if (numValidPairs == 0) {
-        this.shuffle();
+        this.shuffle(tiles, requirePair);
       }
     }
   };
 
   this.update = function(time) {
-    var updateTilePositions = false;
+    var updateTileIndexes = [];
     for (var i = numTiles - 1; i >= 0; i--) {
       if (!tiles[i]) {
         continue;
@@ -98,23 +102,95 @@ var Grid = new (function() {
       tiles[i].update(time);
       if (tiles[i].readyToRemove) {
         tiles[i] = false;
-        updateTilePositions = true;
+        updateTileIndexes.push(i);
       }
     }
 
-    if (updateTilePositions) {
-      this.updateGravity();
+    if (matchesToFind > 0 && updateTileIndexes.length > 0) {
+      this.updateGravity(updateTileIndexes);
       if (numValidPairs == 0) {
-        this.shuffle();
+//        console.log('shuffle? pairs', numValidPairs, 'matches to find', matchesToFind);
+        this.shuffle(tiles, true);
       }
     }
   };
 
-  this.updateGravity = function() {
-    if (!gameMode.gravityType) {
+  this.updateGravity = function(updateTileIndexes) {
+    if (!gameMode.gravityType || updateTileIndexes.length <= 0) {
       return false;
     }
-    // @todo add gravity stuff
+
+    switch (gameMode.gravityType) {
+      case GRAVITY_DOWN:
+        this.updateGravityDown(updateTileIndexes);
+        break;
+    }
+  };
+
+  this.updateGravityDown = function(tileIndexes) {
+    var i;
+
+    var cols = [];
+
+    for (i = 0; i < tileIndexes.length; i++) {
+      cols.push(this.indexToCol(tileIndexes[i], GRID_COLS));
+    }
+    cols = cols.unique();
+
+    for (i = 0; i < cols.length; i++) {
+//      console.log('-----------------------');
+      var col = cols[i];
+      var moveRows = 1;
+      for (var row = GRID_ROWS - 2; row >= 0; row--) {
+        // Skip if this position does not have a tile
+        if (!this.isActiveTileAt(col, row)) {
+          continue;
+        }
+
+        // Skip if the next position has a tile
+        if (this.isActiveTileAt(col, row + 1)) {
+          continue;
+        }
+
+        // Move tile 1 or 2 tiles down
+        if (row + 2 < GRID_ROWS && !this.isActiveTileAt(col, row + 2)) {
+          moveRows = 2;
+        }
+
+//        console.log('moveRows', moveRows, 'for', col, row);
+        var oldIndex = this.tileToIndex(col, row);
+        var newIndex = this.tileToIndex(col, row + moveRows);
+        tiles[newIndex] = tiles[oldIndex];
+        tiles[newIndex].placeAtIndex(newIndex);
+        tiles.splice(oldIndex, 1, false);
+      }
+
+      if (0 < numExtraRemaining) {
+        var addExtra = 1;
+        if (!this.isActiveTileAt(col, 1)) {
+          addExtra = 2;
+        }
+
+        // Add extra tiles
+        var newTileIndex = col + GRID_COLS * (addExtra - 1);
+//        console.log('Add num extras', addExtra, 'on col', col, 'starting at', newTileIndex);
+        for (var e = col; e < extraTiles.length; e += GRID_COLS) {
+          if (extraTiles[e]) {
+//            console.log('add extra', newTileIndex, 'from', e);
+            tiles[newTileIndex] = extraTiles[e];
+            tiles[newTileIndex].placeAtIndex(newTileIndex);
+            extraTiles.splice(e, 1, false);
+            newTileIndex -= GRID_COLS;
+            addExtra--;
+            numExtraRemaining--;
+          }
+
+          if (addExtra <= 0) {
+            break;
+          }
+        }
+      }
+    }
   };
 
   this.draw = function(time) {

@@ -26,7 +26,7 @@ var Menu = new (function() {
       initialized = true;
 
       buttons.push(new ButtonText(100, 100, 'Normal', buttonStartGame, GAME_NORMAL));
-      buttons.push(new ButtonText(100, 150, 'Modern', buttonStartGame, GAME_NORMAL));
+      buttons.push(new ButtonText(100, 150, 'Modern', buttonStartGame, GAME_MODERN));
       buttons.push(new ButtonText(100, 200, 'Advanced', buttonStartGame, GAME_NORMAL));
       buttons.push(new ButtonText(100, 250, 'Funky', buttonStartGame, GAME_NORMAL));
       buttons.push(new ButtonText(100, 325, 'Credits', buttonCredits));
@@ -275,7 +275,7 @@ var FloatingTile = function() {
     gameContext.globalAlpha = scale;
     gameContext.translate(drawX, drawY);
     gameContext.rotate(drawAngle);
-    gameContext.drawImage(Images['tiles_' + settings['theme']], spriteX, spriteY, TILE_WIDTH, TILE_HEIGHT, - drawWidth / 2, - drawHeight / 2, drawWidth, drawHeight);
+    gameContext.drawImage(Images['tiles_' + settings['theme']], spriteX, spriteY, TILE_WIDTH, TILE_HEIGHT, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
     gameContext.restore();
   };
 };
