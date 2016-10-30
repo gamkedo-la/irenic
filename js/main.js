@@ -25,11 +25,12 @@ MainLoop.setDraw = function(fun) {
   return MainLoop_setDraw.call(this, function(interpolationPercentage) {
     gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
+    fun(interpolationPercentage);
+
     gameContext.font = titleFont;
     gameContext.textBaseline = 'top';
     gameContext.textAlign = 'center';
     drawText(gameContext, gameCanvas.width / 2, 10, fontColor, 'Irenic');
-    fun(interpolationPercentage);
     redrawCanvas();
   });
 };
