@@ -32,7 +32,7 @@ gameModes[GAME_NORMAL] = {
 };
 
 gameModes[GAME_MODERN] = {
-  numTileTypes: 32,
+  numTileTypes: 36,
   extraTileRows: 5,
   gravityType: GRAVITY_DOWN
 };

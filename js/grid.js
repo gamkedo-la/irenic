@@ -18,25 +18,21 @@ var Grid = new (function() {
     }
 
     // Clear out old tiles and find some new ones.
-    tiles = [];
-    extraTiles = [];
+    var candidate;
     var tileTypes = [];
-    for (var t = 0; t < gameMode.numTileTypes; t++) {
-      tileTypes.push(Math.floor(Math.random() * NUM_SPRITES));
+    for (var t = 0; tileTypes.length < gameMode.numTileTypes; t++) {
+      candidate = Math.floor(Math.random() * NUM_SPRITES);
+      // @todo generate a better set of tiles; not 'completely random'
+      if (tileTypes.indexOf(candidate) == -1) {
+        tileTypes.push(candidate);
+      }
     }
 
-    // @todo generate a better set of tiles; not 'completely random'
-    var candidate;
-    while (tiles.length < numTiles) {
-      candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
-      tiles.push(new Tile(candidate), new Tile(candidate));
-    }
+    tiles = this.generateTiles(numTiles, tileTypes);
+
+    extraTiles = [];
     if (gameMode.extraTileRows) {
-      numExtraRemaining = gameMode.extraTileRows * GRID_COLS;
-      while (extraTiles.length < numExtraRemaining) {
-        candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
-        extraTiles.push(new Tile(candidate), new Tile(candidate));
-      }
+      extraTiles = this.generateTiles(gameMode.extraTileRows * GRID_COLS, tileTypes);
     }
 
     numExtraRemaining = extraTiles.length;
@@ -47,14 +43,25 @@ var Grid = new (function() {
     if (gameMode.extraTileRows) {
       this.shuffle(extraTiles);
     }
+  };
 
-    var i = 0;
-    for (var c = 0; c < GRID_COLS; c++) {
-      for (var r = 0; r < GRID_ROWS; r++) {
-        tiles[i].reset();
-        i++;
+  this.generateTiles = function(amount, tileTypes) {
+    var candidate;
+    var result = [];
+    var numCandidates = Math.floor(amount / tileTypes.length);
+    for (var n = 0; n < tileTypes.length; n++) {
+      for (var a = 0; a < numCandidates; a++) {
+        result.push(new Tile(tileTypes[n]));
       }
     }
+
+    // Add a few more random ones
+    while (result.length < amount) {
+      candidate = tileTypes[Math.floor(Math.random() * tileTypes.length)];
+      result.push(new Tile(candidate), new Tile(candidate));
+    }
+
+    return result;
   };
 
   this.shuffle = function(tiles, requirePair) {

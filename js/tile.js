@@ -26,11 +26,6 @@ var Tile = function(index) {
     return this;
   };
 
-  this.reset = function() {
-    this.active = false;
-    return this;
-  };
-
   this.update = function(delta) {
     if (0 < this.matching) {
       this.matching -= delta;
