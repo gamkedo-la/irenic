@@ -23,6 +23,8 @@ var fontColor = '#eee';
 var gameModes = [];
 const GAME_NORMAL = 1;
 const GAME_MODERN = 2;
+const GAME_ADVANCED = 3;
+const GAME_FUNKY = 4;
 const GRAVITY_DOWN = 1;
 
 gameModes[GAME_NORMAL] = {
@@ -34,5 +36,17 @@ gameModes[GAME_NORMAL] = {
 gameModes[GAME_MODERN] = {
   numTileTypes: 36,
   extraTileRows: 5,
+  gravityType: GRAVITY_DOWN
+};
+
+gameModes[GAME_ADVANCED] = {
+  numTileTypes: 42,
+  extraTileRows: 0,
+  gravityType: GRAVITY_DOWN
+};
+
+gameModes[GAME_FUNKY] = {
+  numTileTypes: 42,
+  extraTileRows: 10,
   gravityType: GRAVITY_DOWN
 };
