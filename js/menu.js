@@ -27,8 +27,8 @@ var Menu = new (function() {
 
       buttons.push(new ButtonText(100, 100, 'Normal', buttonStartGame, GAME_NORMAL));
       buttons.push(new ButtonText(100, 150, 'Modern', buttonStartGame, GAME_MODERN));
-      buttons.push(new ButtonText(100, 200, 'Advanced', buttonStartGame, GAME_NORMAL));
-      buttons.push(new ButtonText(100, 250, 'Funky', buttonStartGame, GAME_NORMAL));
+      buttons.push(new ButtonText(100, 200, 'Advanced', buttonStartGame, GAME_ADVANCED));
+      buttons.push(new ButtonText(100, 250, 'Funky', buttonStartGame, GAME_FUNKY));
       buttons.push(new ButtonText(100, 325, 'Credits', buttonCredits));
 
       buttons.push(new ButtonToggle(500, 100, 'theme', 'classic', Images.button_classic, false, buttonToggleTheme));
