@@ -11,6 +11,14 @@ if (!Object.keys) {
   };
 }
 
+function createObjectFrom(constructorName) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  var newObject = Object.create(constructorName.prototype);
+  var constructorReturn = constructorName.apply(newObject, args);
+
+  return (constructorReturn !== undefined) ? constructorReturn : newObject;
+}
+
 function isString(obj) {
   return (Object.prototype.toString.call(obj) === '[object String]');
 }

@@ -255,8 +255,7 @@ var Grid = new (function() {
         tile1.match();
         tile2.match();
 
-        // @todo draw particles-path using path
-        Particles.push(new ParticleLine(path));
+        Particles.spawn(ParticleLightning, path);
 
         resetTouchedTiles();
         matchesToFind--;
