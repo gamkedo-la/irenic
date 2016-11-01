@@ -40,7 +40,7 @@ function clickOrTouch(event) {
     mouse.button = event.button;
   }
 
-  if (debug && !Menu.isActive() && event.button == 1) {
+  if (DEBUG && !Menu.isActive() && event.button == 1) {
     var i = Grid.coordsToArrayIndex(mouse.x, mouse.y);
     console.log('remove', i);
     Grid.removeTile(i);

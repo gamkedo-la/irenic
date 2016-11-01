@@ -1,3 +1,6 @@
+// Debug
+const DEBUG = true;
+
 const TILE_WIDTH = 44;
 const TILE_HEIGHT = 55;
 const TILE_GAP = 2;
@@ -32,23 +35,27 @@ const GRAVITY_DOWN = 1;
 gameModes[GAME_NORMAL] = {
   numTileTypes: 30,
   extraTileRows: 0,
-  gravityType: false
+  gravityType: false,
+  numHints: 10
 };
 
 gameModes[GAME_MODERN] = {
   numTileTypes: 36,
   extraTileRows: 5,
-  gravityType: GRAVITY_DOWN
+  gravityType: GRAVITY_DOWN,
+  numHints: 6
 };
 
 gameModes[GAME_ADVANCED] = {
   numTileTypes: 42,
   extraTileRows: 0,
-  gravityType: GRAVITY_DOWN
+  gravityType: GRAVITY_DOWN,
+  numHints: 3
 };
 
 gameModes[GAME_FUNKY] = {
   numTileTypes: 42,
   extraTileRows: 10,
-  gravityType: GRAVITY_DOWN
+  gravityType: GRAVITY_DOWN,
+  numHints: 3
 };

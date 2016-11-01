@@ -2,8 +2,10 @@ var Buttons = new (function() {
   var buttons = [];
 
   this.initialize = function() {
-    buttons.push(new ButtonSetting(638, 0, 'sound', true, Images.button_sound_on, Images.button_sound_off, buttonToggleSetting));
-    buttons.push(new ButtonSetting(688, 0, 'timer', true, Images.button_timer_on, Images.button_timer_off, buttonToggleSetting, menuIsActive));
+    buttons.push(new ButtonSetting(588, 0, 'sound', true, Images.button_sound_on, Images.button_sound_off, buttonToggleSetting));
+    buttons.push(new ButtonSetting(638, 0, 'timer', true, Images.button_timer_on, Images.button_timer_off, buttonToggleSetting, menuIsActive));
+    buttons.push(new Button(638, 0, Images.button_hint_on, buttonHint, hasHintsRemaining));
+    buttons.push(new Button(638, 0, Images.button_hint_off, false, noHintsRemaining));
     buttons.push(new Button(688, 0, Images.button_x, buttonQuit, gameIsActive));
   };
 
@@ -27,8 +29,20 @@ var Buttons = new (function() {
     Menu.activate();
   };
 
+  var buttonHint = function() {
+    return Grid.showHint();
+  };
+
   var menuIsActive = function() {
     return Menu.isActive();
+  };
+
+  var hasHintsRemaining = function() {
+    return gameIsActive() && Grid.hasHintsRemaining();
+  };
+
+  var noHintsRemaining = function() {
+    return gameIsActive() && !Grid.hasHintsRemaining();
   };
 
   var gameIsActive = function() {

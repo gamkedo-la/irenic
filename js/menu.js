@@ -148,7 +148,7 @@ var _Button = function(x, y, width, height, callback, callbackArguments) {
 
   this.update = function() {
     this.hover = (x < mouse.x && mouse.x < x + width && y < mouse.y && mouse.y < y + height);
-    if (this.hover && mouse.button === 0) {
+    if (this.hover && callback && mouse.button === 0) {
       mouse.x = mouse.y = -1;
       mouse.button = undefined;
 

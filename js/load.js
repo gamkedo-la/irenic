@@ -13,6 +13,8 @@ var Images = new (function() {
     button_timer_on: 'img/button-timer-on.png',
     button_timer_off: 'img/button-timer-off.png',
     button_x: 'img/button-x.png',
+    button_hint_on: 'img/button-hint-on.png',
+    button_hint_off: 'img/button-hint-off.png',
     button_classic: 'img/button-classic.png',
     button_numbers: 'img/button-numbers.png'
   };

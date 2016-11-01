@@ -6,6 +6,7 @@ var Tile = function(index) {
   this.matching = 0;
   this.readyToRemove = false;
   this.active = false;
+  this.hintTimer = 0;
 
   this.x = 0;
   this.y = 0;
@@ -20,8 +21,8 @@ var Tile = function(index) {
     this.col = Grid.indexToCol(index, GRID_COLS);
     this.row = Grid.indexToRow(index, GRID_COLS);
 
-    this.x = this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH;
-    this.y = this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT;
+    this.x = this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH + TILE_WIDTH / 2;
+    this.y = this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + TILE_HEIGHT / 2;
 
     return this;
   };
@@ -29,6 +30,12 @@ var Tile = function(index) {
   this.update = function(delta) {
     if (0 < this.matching) {
       this.matching -= delta;
+    }
+    if (0 < this.hintTimer) {
+      this.hintTimer -= delta;
+      if (this.hintTimer < 0) {
+        this.hintTimer = 0;
+      }
     }
 
     this.readyToRemove = this.readyToRemove || (this.matching < 0);
@@ -40,13 +47,20 @@ var Tile = function(index) {
     }
 
     var imageName = 'tiles_' + settings['theme'];
-    if (this.active || this.matching) {
+    if (this.active || this.matching || this.hintTimer) {
       imageName += '_active';
     }
     else if (this.hover()) {
       imageName += '_hover';
     }
-    gameContext.drawImage(Images[imageName], this.spriteX, this.spriteY, TILE_WIDTH, TILE_HEIGHT, this.x, this.y, TILE_WIDTH, TILE_HEIGHT);
+
+    gameContext.save();
+    gameContext.translate(this.x, this.y);
+    if (this.hintTimer) {
+      gameContext.rotate(random(-0.2, 0.2, true));
+    }
+    gameContext.drawImage(Images[imageName], this.spriteX, this.spriteY, TILE_WIDTH, TILE_HEIGHT, -TILE_WIDTH/2, -TILE_HEIGHT/2, TILE_WIDTH, TILE_HEIGHT);
+    gameContext.restore();
   };
 
   this.bounds = function() {
@@ -67,5 +81,9 @@ var Tile = function(index) {
   this.match = function() {
     // @todo removal particle/animation
     this.matching = 500;
+  };
+
+  this.hint = function() {
+    this.hintTimer = 800;
   };
 };

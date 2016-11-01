@@ -5,6 +5,7 @@ var Grid = new (function() {
   var numTilesRemaining = 0;
   var numExtraRemaining = 0;
   var matchesToFind = 0;
+  var numHints = 0;
   var tiles = [];
   var extraTiles = [];
   var gameMode;
@@ -39,6 +40,7 @@ var Grid = new (function() {
     numExtraRemaining = extraTiles.length;
     numTilesRemaining = tiles.length + extraTiles.length;
     matchesToFind = (numTilesRemaining) / 2;
+    numHints = gameMode.numHints;
 
     this.shuffle(tiles, true);
     if (gameMode.extraTileRows) {
@@ -234,7 +236,7 @@ var Grid = new (function() {
   };
 
   this.removeTile = function(i) {
-    if (!debug || !tiles[i]) {
+    if (!DEBUG || !tiles[i]) {
       return;
     }
 
@@ -295,9 +297,46 @@ var Grid = new (function() {
     }
   };
 
-  this.numValidPairs = function() {
+  this.hasHintsRemaining = function() {
+    return 0 < numHints || DEBUG;
+  };
+
+  this.showHint = function() {
+    if (!this.hasHintsRemaining()) {
+      return;
+    }
+    numHints--;
+
+    var pairs = this.getValidPairs();
+    if (pairs.length == 0) {
+      return;
+    }
+
+    var pair = pairs[Math.floor(Math.random() * pairs.length)];
+    tiles[pair[0]].hint();
+    tiles[pair[1]].hint();
+  };
+
+  this.removeValidPair = function() {
+    // Debug function only!
+    if (!DEBUG) {
+      return;
+    }
+
+    var pairs = this.getValidPairs();
+    if (pairs.length == 0) {
+      return;
+    }
+
+    var pair = pairs[Math.floor(Math.random() * pairs.length)];
+    tile1 = tiles[pair[0]];
+    this._touch(tiles[pair[1]]);
+  };
+
+  this.getValidPairs = function() {
+    var pairs = [];
+
     var tilesCopy = tiles.slice();
-    var numPairs = 0;
     for (var p1 = 0; p1 < tilesCopy.length - 1; p1++) {
       if (!tilesCopy[p1] || tilesCopy[p1].matching) {
         continue;
@@ -309,13 +348,17 @@ var Grid = new (function() {
         }
 
         if (this.validPathBetweenTiles(tilesCopy[p1], tilesCopy[p2])) {
-          tilesCopy[p1] = tilesCopy[p2] = false;
-          numPairs++;
+          pairs.push([p1, p2]);
         }
       }
     }
 
-    return numPairs;
+
+    return pairs;
+  };
+
+  this.numValidPairs = function() {
+    return this.getValidPairs().length;
   };
 
   this.validPathBetweenTiles = function(_tile1, _tile2) {
