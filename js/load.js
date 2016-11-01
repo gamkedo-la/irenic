@@ -4,19 +4,27 @@ var Images = new (function() {
     tiles_classic: 'img/tiles-classic.png',
     tiles_classic_hover: 'img/tiles-classic-hover.png',
     tiles_classic_active: 'img/tiles-classic-active.png',
+
     tiles_numbers: 'img/tiles-numbers.png',
     tiles_numbers_hover: 'img/tiles-numbers-hover.png',
     tiles_numbers_active: 'img/tiles-numbers-active.png',
+
+    tiles_crosspoint: 'img/tiles-crosspoint.png',
+    tiles_crosspoint_hover: 'img/tiles-crosspoint-hover.png',
+    tiles_crosspoint_active: 'img/tiles-crosspoint-active.png',
 
     button_sound_on: 'img/button-sound-on.png',
     button_sound_off: 'img/button-sound-off.png',
     button_timer_on: 'img/button-timer-on.png',
     button_timer_off: 'img/button-timer-off.png',
+
     button_x: 'img/button-x.png',
     button_hint_on: 'img/button-hint-on.png',
     button_hint_off: 'img/button-hint-off.png',
+
     button_classic: 'img/button-classic.png',
-    button_numbers: 'img/button-numbers.png'
+    button_numbers: 'img/button-numbers.png',
+    button_crosspoint: 'img/button-crosspoint.png'
   };
 
   this.initialize = function(callback) {
