@@ -2,6 +2,7 @@ function setupInput() {
   drawCanvas.addEventListener('mousemove', this.updateMousePosition);
   drawCanvas.addEventListener('mousedown', this.clickOrTouch);
   drawCanvas.addEventListener('touchstart', this.clickOrTouch);
+  document.addEventListener('keypress', keyPress);
 }
 
 function setMousePos(posX, posY, button) {
@@ -46,6 +47,12 @@ function clickOrTouch(event) {
   }
   else {
     Grid.touch(mouse.x, mouse.y);
+  }
+}
+
+function keyPress(event) {
+  if (!Menu.isActive() && event.keyCode == KEY_ESC) {
+    Menu.activate();
   }
 }
 

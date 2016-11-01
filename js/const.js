@@ -15,6 +15,8 @@ const TIMEOUT_IS_MATCH = 700;
 const TIMEOUT_NO_MATCH = 1200;
 const TIMEOUT_WON_GAME = 2000;
 
+const KEY_ESC = 27;
+
 var titleFont = 'bold 40pt Steel City Comic';
 var gameFont = '20pt Steel City Comic';
 var gameFontSmall = '16pt Steel City Comic';
