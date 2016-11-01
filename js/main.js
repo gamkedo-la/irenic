@@ -52,6 +52,7 @@ window.onload = function() {
 
 function menuInitialize() {
   setupInput();
+  Buttons.initialize();
   Menu.initialize();
 }
 
@@ -91,6 +92,7 @@ function setSetting(setting, value) {
 }
 
 function gameUpdate(delta) {
+  Buttons.update();
   Grid.update(delta);
   Particles.update(delta);
 }
@@ -115,6 +117,7 @@ function gameDraw(interpolationPercentage) {
 
   Grid.draw(interpolationPercentage);
   Particles.draw(interpolationPercentage);
+  Buttons.draw();
 
   gameContext.restore();
 }

@@ -52,6 +52,10 @@ var Grid = new (function() {
     return isActive;
   };
 
+  this.deactivate = function() {
+    isActive = false;
+  };
+
   this.generateTiles = function(amount, tileTypes) {
     var candidate;
     var result = [];

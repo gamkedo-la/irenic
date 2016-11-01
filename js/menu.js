@@ -3,8 +3,6 @@ var Menu = new (function() {
   var initialized = false;
   var showCredits = false;
   var creditsBackButton;
-  var soundToggleButton;
-  var timerToggleButton;
 
   var tiles = [];
   var tileSpawnTime = 100;
@@ -35,8 +33,6 @@ var Menu = new (function() {
       buttons.push(new ButtonToggle(500, 160, 'theme', 'numbers', Images.button_numbers, false, buttonToggleTheme));
 
       creditsBackButton = new ButtonText(100, 100, 'Back', buttonCredits);
-      soundToggleButton = new ButtonToggle(500, 60, 'sound', true, Images.button_sound_on, Images.button_sound_off, buttonToggleSetting);
-      timerToggleButton = new ButtonToggle(550, 60, 'timer', true, Images.button_timer_on, Images.button_timer_off, buttonToggleSetting);
     }
 
     tiles = [
@@ -54,6 +50,8 @@ var Menu = new (function() {
       return;
     }
 
+    Buttons.update();
+
     var b = 0;
     if (showCredits) {
       creditsBackButton.update();
@@ -63,8 +61,6 @@ var Menu = new (function() {
         buttons[b].update();
       }
     }
-    soundToggleButton.update();
-    timerToggleButton.update();
 
     for (var t = tiles.length - 1; t >= 0; t--) {
       tiles[t].update(delta);
@@ -107,8 +103,8 @@ var Menu = new (function() {
         buttons[i].draw();
       }
     }
-    soundToggleButton.draw();
-    timerToggleButton.draw();
+
+    Buttons.draw();
   };
 
   this.isActive = function() {
@@ -120,6 +116,7 @@ var Menu = new (function() {
       return;
     }
 
+    Grid.deactivate();
     isActive = true;
 
     MainLoop
@@ -139,10 +136,6 @@ var Menu = new (function() {
 
   var buttonCredits = function() {
     showCredits = !showCredits;
-  };
-
-  var buttonToggleSetting = function(setting) {
-    setSetting(setting, !settings[setting]);
   };
 
   var buttonToggleTheme = function(setting, theme) {

@@ -12,6 +12,7 @@ var Images = new (function() {
     button_sound_off: 'img/button-sound-off.png',
     button_timer_on: 'img/button-timer-on.png',
     button_timer_off: 'img/button-timer-off.png',
+    button_x: 'img/button-x.png',
     button_classic: 'img/button-classic.png',
     button_numbers: 'img/button-numbers.png'
   };
