@@ -116,6 +116,10 @@ var Menu = new (function() {
   };
 
   this.activate = function() {
+    if (Grid.isActive() && !confirm('Quit game and go back to menu?')) {
+      return;
+    }
+
     isActive = true;
 
     MainLoop

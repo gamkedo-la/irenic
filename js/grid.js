@@ -8,6 +8,7 @@ var Grid = new (function() {
   var tiles = [];
   var extraTiles = [];
   var gameMode;
+  var isActive = false;
 
   this.start = function(_gameMode) {
     if (_gameMode && gameModes[_gameMode]) {
@@ -43,6 +44,12 @@ var Grid = new (function() {
     if (gameMode.extraTileRows) {
       this.shuffle(extraTiles);
     }
+
+    isActive = true;
+  };
+
+  this.isActive = function() {
+    return isActive;
   };
 
   this.generateTiles = function(amount, tileTypes) {
@@ -270,6 +277,7 @@ var Grid = new (function() {
         numValidPairs = this.numValidPairs();
         if (matchesToFind == 0) {
           setTimeout(function() {
+            isActive = false;
             winGame();
           }, TIMEOUT_WON_GAME);
         }
