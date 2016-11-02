@@ -14,6 +14,8 @@ var Menu = new (function() {
   var buttons = [];
   var credits = [
     'SpadXIII - Team lead, coding',
+    'Chris DeLeon - Tileset Crosspoint',
+    'Micky Turner - Sounds',
     'Someone else - other stuff'
   ];
 
