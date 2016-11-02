@@ -13,6 +13,9 @@ var Images = new (function() {
     tiles_crosspoint_hover: 'img/tiles-crosspoint-hover.png',
     tiles_crosspoint_active: 'img/tiles-crosspoint-active.png',
 
+    background_classic: 'img/background-classic.png',
+    background_crosspoint: 'img/background-crosspoint.png',
+
     button_sound_on: 'img/button-sound-on.png',
     button_sound_off: 'img/button-sound-off.png',
     button_timer_on: 'img/button-timer-on.png',

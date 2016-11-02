@@ -24,10 +24,15 @@ MainLoop.setDraw = function(fun) {
 
     fun(interpolationPercentage);
 
+    gameContext.shadowOffsetX = 0;
+    gameContext.shadowOffsetY = 0;
+    gameContext.shadowBlur = 6;
+    gameContext.shadowColor = '#000';
     gameContext.font = titleFont;
     gameContext.textBaseline = 'top';
     gameContext.textAlign = 'center';
     drawText(gameContext, gameCanvas.width / 2, 10, fontColor, 'Irenic');
+    gameContext.shadowBlur = 0;
     redrawCanvas();
   });
 };
@@ -50,7 +55,15 @@ window.onload = function() {
   }
 };
 
+function setBackground() {
+  document.body.style.backgroundImage = '';
+  if (Images['background_' + settings.theme]) {
+    document.body.style.backgroundImage = 'url(' + Images['background_' + settings.theme].src + ')';
+  }
+}
+
 function menuInitialize() {
+  setBackground();
   setupInput();
   Buttons.initialize();
   Menu.initialize();
@@ -86,6 +99,10 @@ function setSetting(setting, value) {
 
   if (localStorage && localStorage.setItem) {
     localStorage.setItem('settings', JSON.stringify(settings));
+  }
+
+  if (setting == 'theme') {
+    setBackground();
   }
 
   return settings[setting];
