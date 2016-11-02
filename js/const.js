@@ -36,26 +36,30 @@ gameModes[GAME_NORMAL] = {
   numTileTypes: 30,
   extraTileRows: 0,
   gravityType: false,
-  numHints: 10
+  numHints: 10,
+  numShuffles: 10
 };
 
 gameModes[GAME_MODERN] = {
   numTileTypes: 36,
   extraTileRows: 5,
   gravityType: GRAVITY_DOWN,
-  numHints: 6
+  numHints: 6,
+  numShuffles: 6
 };
 
 gameModes[GAME_ADVANCED] = {
   numTileTypes: 42,
   extraTileRows: 0,
   gravityType: GRAVITY_DOWN,
-  numHints: 3
+  numHints: 3,
+  numShuffles: 3
 };
 
 gameModes[GAME_FUNKY] = {
   numTileTypes: 42,
   extraTileRows: 10,
   gravityType: GRAVITY_DOWN,
-  numHints: 3
+  numHints: 3,
+  numShuffles: 3
 };

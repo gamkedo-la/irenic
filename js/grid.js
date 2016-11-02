@@ -6,6 +6,7 @@ var Grid = new (function() {
   var numExtraRemaining = 0;
   var matchesToFind = 0;
   var numHints = 0;
+  var numShuffles = 0;
   var tiles = [];
   var extraTiles = [];
   var gameMode;
@@ -41,6 +42,7 @@ var Grid = new (function() {
     numTilesRemaining = tiles.length + extraTiles.length;
     matchesToFind = (numTilesRemaining) / 2;
     numHints = gameMode.numHints;
+    numShuffles = gameMode.numShuffles;
 
     this.shuffle(tiles, true);
     if (gameMode.extraTileRows) {
@@ -77,37 +79,44 @@ var Grid = new (function() {
     return result;
   };
 
-  this.shuffle = function(tiles, requirePair) {
+  this.shuffle = function(shuffleTiles, requirePair) {
+    if (shuffleTiles == undefined) {
+      shuffleTiles = tiles;
+    }
+    if (requirePair == undefined) {
+      requirePair = true;
+    }
+
     var hasShuffled = false;
-    for (var i = tiles.length - 1; i > 0; i--) {
-      if (!tiles[i] || tiles[i].matching) {
+    for (var i = shuffleTiles.length - 1; i > 0; i--) {
+      if (!shuffleTiles[i] || shuffleTiles[i].matching) {
         continue;
       }
 
       var loops = 0;
       do {
         var j = Math.floor(Math.random() * (i + 1));
-      } while (loops++ < 10 && (i == j || !tiles[j] || tiles[j].matching));
+      } while (loops++ < 10 && (i == j || !shuffleTiles[j] || shuffleTiles[j].matching));
 
       // If after 10 loops we still did not find a valid j index, skip it.
-      if (!tiles[j] || tiles[j].matching) {
+      if (!shuffleTiles[j] || shuffleTiles[j].matching) {
         continue;
       }
 
       hasShuffled = true;
 
-      var temp = tiles[i];
-      tiles[i] = tiles[j];
-      tiles[j] = temp;
+      var temp = shuffleTiles[i];
+      shuffleTiles[i] = shuffleTiles[j];
+      shuffleTiles[j] = temp;
 
-      tiles[i].placeAtIndex(i);
-      tiles[j].placeAtIndex(j);
+      shuffleTiles[i].placeAtIndex(i);
+      shuffleTiles[j].placeAtIndex(j);
     }
 
     if (requirePair && matchesToFind > 0 && hasShuffled) {
       numValidPairs = this.numValidPairs();
       if (numValidPairs == 0) {
-        this.shuffle(tiles, requirePair);
+        this.shuffle(shuffleTiles, requirePair);
       }
     }
   };
@@ -272,6 +281,7 @@ var Grid = new (function() {
       tile2.active = true;
 
       if (tile1.index == tile2.index && (path = this.validPathBetweenTiles(tile1, tile2))) {
+        Sounds.play('matched_pair');
         tile1.match();
         tile2.match();
 
@@ -295,6 +305,19 @@ var Grid = new (function() {
         tile2 = false;
       }
     }
+  };
+
+  this.hasShufflesRemaining = function() {
+    return 0 < numShuffles || DEBUG;
+  };
+
+  this.shuffleTiles = function() {
+    if (!this.hasShufflesRemaining()) {
+      return;
+    }
+    numShuffles--;
+
+    this.shuffle(tiles, true);
   };
 
   this.hasHintsRemaining = function() {

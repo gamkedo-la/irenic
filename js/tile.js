@@ -2,6 +2,8 @@ var Tile = function(index) {
   this.index = index;
   var spriteCol = Grid.indexToCol(index, SPRITE_COLS);
   var spriteRow = Grid.indexToRow(index, SPRITE_COLS);
+  var halfWidth = TILE_WIDTH / 2;
+  var halfHeight = TILE_HEIGHT / 2;
 
   this.matching = 0;
   this.readyToRemove = false;
@@ -21,8 +23,8 @@ var Tile = function(index) {
     this.col = Grid.indexToCol(index, GRID_COLS);
     this.row = Grid.indexToRow(index, GRID_COLS);
 
-    this.x = this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH + TILE_WIDTH / 2;
-    this.y = this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + TILE_HEIGHT / 2;
+    this.x = this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH + halfWidth;
+    this.y = this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + halfHeight;
 
     return this;
   };
@@ -59,16 +61,16 @@ var Tile = function(index) {
     if (this.hintTimer) {
       gameContext.rotate(random(-0.2, 0.2, true));
     }
-    gameContext.drawImage(Images[imageName], this.spriteX, this.spriteY, TILE_WIDTH, TILE_HEIGHT, -TILE_WIDTH/2, -TILE_HEIGHT/2, TILE_WIDTH, TILE_HEIGHT);
+    gameContext.drawImage(Images[imageName], this.spriteX, this.spriteY, TILE_WIDTH, TILE_HEIGHT, -halfWidth, -halfHeight, TILE_WIDTH, TILE_HEIGHT);
     gameContext.restore();
   };
 
   this.bounds = function() {
     return {
-      top: this.y,
-      bottom: this.y + TILE_HEIGHT,
-      left: this.x,
-      right: this.x + TILE_WIDTH
+      top: this.y - halfHeight,
+      bottom: this.y + halfHeight,
+      left: this.x - halfWidth,
+      right: this.x + halfWidth
     };
   };
 

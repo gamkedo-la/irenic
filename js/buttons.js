@@ -4,9 +4,11 @@ var Buttons = new (function() {
   this.initialize = function() {
     buttons.push(new ButtonSetting(588, 0, 'sound', true, Images.button_sound_on, Images.button_sound_off, buttonToggleSetting));
     buttons.push(new ButtonSetting(638, 0, 'timer', true, Images.button_timer_on, Images.button_timer_off, buttonToggleSetting, menuIsActive));
-    buttons.push(new Button(638, 0, Images.button_hint_on, buttonHint, hasHintsRemaining));
-    buttons.push(new Button(638, 0, Images.button_hint_off, false, noHintsRemaining));
-    buttons.push(new Button(688, 0, Images.button_x, buttonQuit, gameIsActive));
+    buttons.push(new Button(538, 0, Images.button_hint_on, buttonHint, hasHintsRemaining));
+    buttons.push(new Button(538, 0, Images.button_hint_off, false, noHintsRemaining));
+    buttons.push(new Button(488, 0, Images.button_shuffle_on, buttonShuffle, hasShufflesRemaining));
+    buttons.push(new Button(488, 0, Images.button_shuffle_off, false, noShufflesRemaining));
+    buttons.push(new Button(638, 0, Images.button_x, buttonQuit, gameIsActive));
   };
 
   this.update = function() {
@@ -33,6 +35,10 @@ var Buttons = new (function() {
     return Grid.showHint();
   };
 
+  var buttonShuffle = function() {
+    return Grid.shuffleTiles();
+  };
+
   var menuIsActive = function() {
     return Menu.isActive();
   };
@@ -43,6 +49,14 @@ var Buttons = new (function() {
 
   var noHintsRemaining = function() {
     return gameIsActive() && !Grid.hasHintsRemaining();
+  };
+
+  var hasShufflesRemaining = function() {
+    return gameIsActive() && Grid.hasShufflesRemaining();
+  };
+
+  var noShufflesRemaining = function() {
+    return gameIsActive() && !Grid.hasShufflesRemaining();
   };
 
   var gameIsActive = function() {

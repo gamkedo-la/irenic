@@ -21,6 +21,8 @@ var Images = new (function() {
     button_x: 'img/button-x.png',
     button_hint_on: 'img/button-hint-on.png',
     button_hint_off: 'img/button-hint-off.png',
+    button_shuffle_on: 'img/button-shuffle-on.png',
+    button_shuffle_off: 'img/button-shuffle-off.png',
 
     button_classic: 'img/button-classic.png',
     button_numbers: 'img/button-numbers.png',
@@ -65,7 +67,10 @@ var Sounds = new (function() {
   }
 
   var sounds = {
-    // key: 'sfx/file_name'
+    // key_theme: 'sfx/file_name'
+    matched_pair_classic: 'audio/Gong',
+    matched_pair_numbers: 'audio/Bamboo',
+    matched_pair_crosspoint: 'audio/Oriental'
   };
 
   this.initialize = function(callback) {
@@ -78,9 +83,16 @@ var Sounds = new (function() {
 
     function doneLoading() {
       numToLoad--;
-      if (numToLoad == 0) {
+      if (numToLoad == 0 && callback) {
         callback();
       }
+    }
+  };
+
+  this.play = function(sound) {
+    sound += '_' + settings['theme'];
+    if (this[sound]) {
+      this[sound].play();
     }
   };
 
@@ -98,7 +110,7 @@ var Sounds = new (function() {
     }
 
     this.play = function() {
-      if (Sounds.muted) {
+      if (!settings.sound) {
         return;
       }
       if (Date.now() - lastPlay > timeOut) {

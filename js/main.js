@@ -38,7 +38,10 @@ window.onload = function() {
 
   initDrawingCanvas();
 
-  Images.initialize(menuInitialize);
+  Sounds.initialize(function() {
+    Images.initialize(menuInitialize);
+  });
+
   MainLoop.setMaxAllowedFPS(30);
 
   var _settings = JSON.parse(localStorage.getItem('settings'));
