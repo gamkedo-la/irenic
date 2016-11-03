@@ -61,8 +61,6 @@ var Images = new (function() {
 })();
 
 var Sounds = new (function() {
-  this.muted = false;
-
   this.audioFormat = '.mp3';
   var audio = new Audio();
   if (audio.canPlayType('audio/ogg')) {
@@ -78,6 +76,10 @@ var Sounds = new (function() {
 
   this.initialize = function(callback) {
     var numToLoad = Object.keys(sounds).length;
+    if (numToLoad == 0 && callback) {
+      callback();
+      return;
+    }
     for (var key in sounds) {
       if (sounds.hasOwnProperty(key)) {
         this[key] = new Sound(sounds[key] + this.audioFormat, doneLoading);
@@ -86,7 +88,7 @@ var Sounds = new (function() {
 
     function doneLoading() {
       numToLoad--;
-      if (numToLoad == 0 && callback) {
+      if (numToLoad <= 0 && callback) {
         callback();
       }
     }
@@ -106,6 +108,7 @@ var Sounds = new (function() {
     var index = 0;
     var file = new Audio(_file);
     file.addEventListener('canplaythrough', callback);
+    file.load();
     var queue = [file];
 
     for (var i = 1; i < numSounds; i++) {
