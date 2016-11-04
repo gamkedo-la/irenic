@@ -1,7 +1,7 @@
-var Tile = function(index) {
-  this.index = index;
-  var spriteCol = Grid.indexToCol(index, SPRITE_COLS);
-  var spriteRow = Grid.indexToRow(index, SPRITE_COLS);
+var Tile = function(tileIndex) {
+  this.tileType = tileIndex;
+  var spriteCol = Grid.indexToCol(tileIndex, SPRITE_COLS);
+  var spriteRow = Grid.indexToRow(tileIndex, SPRITE_COLS);
   var halfWidth = TILE_WIDTH / 2;
   var halfHeight = TILE_HEIGHT / 2;
 
@@ -10,8 +10,8 @@ var Tile = function(index) {
   this.active = false;
   this.hintTimer = 0;
 
-  this.x = 0;
-  this.y = 0;
+  this.x = undefined;
+  this.y = undefined;
   this.row = 0;
   this.col = 0;
   this.spriteX = spriteCol * TILE_WIDTH;
@@ -20,11 +20,44 @@ var Tile = function(index) {
   // @todo do something with first positioning
   // @todo do something with animated shuffling
   this.placeAtIndex = function(index) {
-    this.col = Grid.indexToCol(index, GRID_COLS);
-    this.row = Grid.indexToRow(index, GRID_COLS);
+    this.col = Grid.indexToCol(index);
+    this.row = Grid.indexToRow(index);
+  };
 
-    this.x = this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH + halfWidth;
-    this.y = this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + halfHeight;
+  this.moveIntoPosition = function(wait) {
+    if (this.x == undefined || this.x < 0) {
+      this.x = random(TILE_WIDTH / 2, GRID_COLS * TILE_WIDTH - TILE_WIDTH / 2);
+      this.y = -TILE_HEIGHT;
+    }
+
+    var coordsCurrent = {
+      x: this.x,
+      y: this.y
+    };
+
+    var coordsTo = {
+      x: this.col * (TILE_WIDTH + TILE_GAP) + GRID_PADDING_WIDTH + halfWidth,
+      y: this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + halfHeight
+    };
+
+    var t = this;
+
+    var tween = new TWEEN.Tween(coordsCurrent)
+      .to(coordsTo, random(400, 600))
+      .easing(TWEEN.Easing.Back.Out)
+      .onUpdate(function() {
+        t.x = coordsCurrent.x;
+        t.y = coordsCurrent.y;
+      });
+
+    if (0 < wait) {
+      setTimeout(function() {
+        tween.start();
+      }, wait);
+    }
+    else {
+      tween.start();
+    }
 
     return this;
   };

@@ -112,6 +112,7 @@ function gameUpdate(delta) {
   Buttons.update();
   Grid.update(delta);
   Particles.update(delta);
+  TWEEN.update();
 }
 
 function gameDraw(interpolationPercentage) {
