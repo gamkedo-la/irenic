@@ -118,7 +118,7 @@ var Grid = new (function() {
       }
 
       if (0 < matchesToFind && numValidPairs == 0) {
-        this.shuffle(shuffleTiles, requirePair, loop + 1);
+        this._shuffle(shuffleTiles, requirePair, loop + 1);
 
         if (loop == 1) {
           numValidPairs = this.numValidPairs();
@@ -130,6 +130,7 @@ var Grid = new (function() {
   this.shuffle = function(shuffleTiles, requirePair, loop) {
     this._shuffle(shuffleTiles, requirePair, loop);
     if (requirePair) {
+      // some tiles aren't set to their correct indexes??
       this.animateTiles();
     }
   };

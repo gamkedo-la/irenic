@@ -17,8 +17,8 @@ var Tile = function(tileIndex) {
   this.spriteX = spriteCol * TILE_WIDTH;
   this.spriteY = spriteRow * TILE_HEIGHT;
 
-  // @todo do something with first positioning
-  // @todo do something with animated shuffling
+  var tween;
+
   this.placeAtIndex = function(index) {
     this.col = Grid.indexToCol(index);
     this.row = Grid.indexToRow(index);
@@ -42,12 +42,19 @@ var Tile = function(tileIndex) {
 
     var t = this;
 
-    var tween = new TWEEN.Tween(coordsCurrent)
+    if (tween) {
+      tween.stop();
+    }
+
+    tween = new TWEEN.Tween(coordsCurrent)
       .to(coordsTo, random(400, 600))
       .easing(TWEEN.Easing.Back.Out)
       .onUpdate(function() {
         t.x = coordsCurrent.x;
         t.y = coordsCurrent.y;
+      })
+      .onComplete(function() {
+        tween = undefined;
       });
 
     if (0 < wait) {
