@@ -88,7 +88,7 @@ var Sounds = new (function() {
 
     function doneLoading(event) {
       if (event) {
-        // Remove event-listener so it only fires one!
+        // Remove event-listener so it only fires once!
         event.target.removeEventListener(event.type, arguments.callee);
       }
       numToLoad--;
