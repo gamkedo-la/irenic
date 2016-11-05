@@ -90,7 +90,6 @@ function winGame() {
   // @todo do something else..
   alert('you won!');
   Particles.clear();
-  // @todo activate menu
   Menu.activate();
 }
 
