@@ -162,3 +162,12 @@ function gameDraw(interpolationPercentage) {
 
   gameContext.restore();
 }
+
+// Make sure we can handle the game when it has fallen too far behind real time.
+// For example when the browser window is hidden or moved to the background.
+MainLoop.setEnd(function(fps, panic) {
+  if (panic) {
+    var discardedTime = Math.round(MainLoop.resetFrameDelta());
+    console.warn('Main loop panicked, probably because the browser tab was put in the background. Discarding ' + discardedTime + 'ms');
+  }
+});
