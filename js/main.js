@@ -67,6 +67,9 @@ function menuInitialize() {
   setupInput();
   Buttons.initialize();
   Menu.initialize();
+
+  var loading = document.getElementById('loading');
+  loading.style.display = 'none';
 }
 
 function gameInitialize(gameMode) {
