@@ -9,6 +9,7 @@ var Grid = new (function() {
   var numShuffles = 0;
   var tiles = [];
   var extraTiles = [];
+  var gameModeKey;
   var gameMode;
   var isActive = false;
   var scoreDisplay = 0;
@@ -22,6 +23,7 @@ var Grid = new (function() {
   var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS);
 
   this.start = function(_gameMode) {
+    gameModeKey = _gameMode;
     if (_gameMode && gameModes[_gameMode]) {
       gameMode = gameModes[_gameMode];
     }
@@ -363,7 +365,7 @@ var Grid = new (function() {
         if (matchesToFind == 0) {
           setTimeout(function() {
             isActive = false;
-            endGame(gameMode, score, numTilesRemaining);
+            endGame(gameModeKey, score, numTilesRemaining);
           }, TIMEOUT_WON_GAME);
         }
       }

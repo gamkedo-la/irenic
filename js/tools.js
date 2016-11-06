@@ -34,6 +34,10 @@ function isArray(obj) {
   return (Object.prototype.toString.call(obj) === '[object Array]');
 }
 
+function padLeft(nr, n, str) {
+  return Array(n - String(nr).length + 1).join(str || '0') + nr;
+}
+
 function sortHiscore(a, b) {
   return b - a;
 }

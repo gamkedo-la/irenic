@@ -110,11 +110,6 @@ function endGame(gameMode, score, numTilesRemaining) {
   }
   setSetting(setting_name, settings[setting_name]);
 
-  message.push('');
-  for (var i = 0; i < settings[setting_name].length; i++) {
-    message.push(settings[setting_name][i]);
-  }
-
   // @todo do something else..
   alert(message.join(' '));
 

@@ -2,26 +2,38 @@ var Menu = new (function() {
   var isActive = false;
   var initialized = false;
   var showCredits = false;
-  var creditsBackButton;
+  var showHiscore = false;
+  var backButton;
 
   var tiles = [];
   var tileSpawnTime = 100;
   var tileTimer = 0;
 
+  var colWidth;
   var canvasCenter;
   var creditsLineHeight = 25;
+  var hiscoreRowY;
 
   var buttons = [];
   var credits = [
     'SpadXIII - Team lead, coding',
     'Chris DeLeon - Tileset Crosspoint',
     'Micky Turner - Sounds',
-    'Someone else - other stuff'
+    ''
   ];
+
+  var gameModes = [GAME_NORMAL, GAME_MODERN, GAME_ADVANCED, GAME_FUNKY];
+  var gameModesLabels = {};
+  gameModesLabels[GAME_NORMAL] = 'Normal';
+  gameModesLabels[GAME_MODERN] = 'Modern';
+  gameModesLabels[GAME_ADVANCED] = 'Advanced';
+  gameModesLabels[GAME_FUNKY] = 'Funky';
 
   this.initialize = function() {
     if (!initialized) {
       canvasCenter = gameCanvas.width / 2;
+      colWidth = (gameCanvas.width - 200) / 4;
+      hiscoreRowY = 200 + 2 * creditsLineHeight;
 
       initialized = true;
 
@@ -30,12 +42,13 @@ var Menu = new (function() {
       buttons.push(new ButtonText(100, 200, 'Advanced', buttonStartGame, GAME_ADVANCED));
       buttons.push(new ButtonText(100, 250, 'Funky', buttonStartGame, GAME_FUNKY));
       buttons.push(new ButtonText(100, 325, 'Credits', buttonCredits));
+      buttons.push(new ButtonText(100, 375, 'Hiscore', buttonHiscore));
 
       buttons.push(new ButtonToggle(500, 100, 'theme', 'classic', Images.button_classic, false, buttonToggleTheme));
       buttons.push(new ButtonToggle(500, 160, 'theme', 'numbers', Images.button_numbers, false, buttonToggleTheme));
       buttons.push(new ButtonToggle(500, 220, 'theme', 'crosspoint', Images.button_crosspoint, false, buttonToggleTheme));
 
-      creditsBackButton = new ButtonText(100, 100, 'Back', buttonCredits);
+      backButton = new ButtonText(100, 100, 'Back', buttonBack);
     }
 
     tiles = [
@@ -56,8 +69,8 @@ var Menu = new (function() {
     Buttons.update();
 
     var b = 0;
-    if (showCredits) {
-      creditsBackButton.update();
+    if (showCredits || showHiscore) {
+      backButton.update();
     }
     else {
       for (b = 0; b < buttons.length; b++) {
@@ -90,15 +103,36 @@ var Menu = new (function() {
     }
 
     var i = 0;
-    if (showCredits) {
-      creditsBackButton.draw();
+    if (showCredits || showHiscore) {
+      backButton.draw();
 
       gameContext.font = gameFontSmall;
       gameContext.textBaseline = 'middle';
       gameContext.textAlign = 'center';
+    }
+
+    if (showCredits) {
       _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + credits.length * creditsLineHeight, 16, 4, '#555', '#888');
       for (i = 0; i < credits.length; i++) {
         drawText(gameContext, canvasCenter, 200 + i * creditsLineHeight, '#fff', credits[i]);
+      }
+    }
+    else if (showHiscore) {
+      _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + (2 + NUM_HISCORE) * creditsLineHeight, 16, 4, '#555', '#888');
+
+      for (var g = 0; g < gameModes.length; g++) {
+        var setting_name = 'hiscore_' + gameModes[g];
+        var hiscoreRowX = 100 + g * colWidth + colWidth / 2;
+
+        drawText(gameContext, hiscoreRowX, 200, '#fff', gameModesLabels[gameModes[g]]);
+
+        if (!settings[setting_name]) {
+          continue;
+        }
+
+        for (i = 0; i < settings[setting_name].length; i++) {
+          drawText(gameContext, hiscoreRowX, hiscoreRowY + i * creditsLineHeight, '#fff', settings[setting_name][i]);
+        }
       }
     }
     else {
@@ -139,6 +173,15 @@ var Menu = new (function() {
 
   var buttonCredits = function() {
     showCredits = !showCredits;
+  };
+
+  var buttonHiscore = function() {
+    showHiscore = !showHiscore;
+  };
+
+  var buttonBack = function() {
+    showCredits = false;
+    showHiscore = false;
   };
 
   var buttonToggleTheme = function(setting, theme) {
