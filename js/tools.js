@@ -34,6 +34,10 @@ function isArray(obj) {
   return (Object.prototype.toString.call(obj) === '[object Array]');
 }
 
+function sortHiscore(a, b) {
+  return b - a;
+}
+
 Array.prototype.unique = function() {
   var a = [];
   for (var i = 0, l = this.length; i < l; i++) {

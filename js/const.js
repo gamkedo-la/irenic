@@ -13,6 +13,7 @@ const GRID_ROWS = 13;
 
 const NUM_SPRITES = 42;
 const SPRITE_COLS = 9;
+const NUM_HISCORE = 5;
 
 const TIMEOUT_IS_MATCH = 700;
 const TIMEOUT_NO_MATCH = 1200;

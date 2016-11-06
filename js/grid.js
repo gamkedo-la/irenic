@@ -363,7 +363,7 @@ var Grid = new (function() {
         if (matchesToFind == 0) {
           setTimeout(function() {
             isActive = false;
-            winGame(score, numTilesRemaining);
+            endGame(gameMode, score, numTilesRemaining);
           }, TIMEOUT_WON_GAME);
         }
       }

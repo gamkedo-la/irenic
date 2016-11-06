@@ -89,9 +89,35 @@ function shakeScreen(amount) {
   screenShakeAmount = amount;
 }
 
-function winGame() {
+function endGame(gameMode, score, numTilesRemaining) {
+  var message = [];
+  if (numTilesRemaining == 0) {
+    message.push('You won!');
+  }
+  else {
+    message.push('Oops! Game over...');
+  }
+
+  // Show hiscores
+  var setting_name = 'hiscore_' + gameMode;
+  if (!settings[setting_name]) {
+    // Empty score, add first one!
+    settings[setting_name] = [score];
+  }
+  else {
+    settings[setting_name].push(score);
+    settings[setting_name] = settings[setting_name].sort(sortHiscore).slice(0, NUM_HISCORE);
+  }
+  setSetting(setting_name, settings[setting_name]);
+
+  message.push('');
+  for (var i = 0; i < settings[setting_name].length; i++) {
+    message.push(settings[setting_name][i]);
+  }
+
   // @todo do something else..
-  alert('you won!');
+  alert(message.join(' '));
+
   Particles.clear();
   Menu.activate();
 }
