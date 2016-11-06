@@ -4,6 +4,9 @@ var Grid = new (function() {
   var numValidPairs = 0;
   var numTilesRemaining = 0;
   var numExtraRemaining = 0;
+  var score = 0;
+  var scoreCounter = 0;
+  var scoreType1, scoreType2;
   var matchesToFind = 0;
   var numHints = 0;
   var numShuffles = 0;
@@ -11,6 +14,17 @@ var Grid = new (function() {
   var extraTiles = [];
   var gameMode;
   var isActive = false;
+  var tweenDataScore = {
+    score: 0
+  };
+
+  var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS);
+
+  var tweenAddScore = new TWEEN.Tween(tweenDataScore)
+    .easing(TWEEN.Easing.Linear.None)
+    .onUpdate(function() {
+      score = Math.round(tweenDataScore.score);
+    });
 
   this.start = function(_gameMode) {
     if (_gameMode && gameModes[_gameMode]) {
@@ -44,12 +58,40 @@ var Grid = new (function() {
     numHints = gameMode.numHints;
     numShuffles = gameMode.numShuffles;
 
+    score = 0;
+    scoreCounter = 0;
+
     this.shuffle(tiles, true);
     if (gameMode.extraTileRows) {
       this.shuffle(extraTiles, false);
     }
 
     isActive = true;
+  };
+
+  var addScore = function(tile1, tile2) {
+    var amount = 25;
+
+    if (scoreType1 == tile1.tileType) {
+      amount = 35;
+
+      if (scoreType2 == tile1.tileType) {
+        amount = 45;
+      }
+    }
+
+    scoreType2 = scoreType1;
+    scoreType1 = tile1.tileType;
+
+    // Distance modifier: quadratic range between 1 and 2
+    var vx = tile1.col - tile2.col;
+    var vy = tile1.row - tile2.row;
+    var distance = Math.sqrt(vx * vx + vy * vy);
+    amount *= (1 + Math.pow(distance / maxDistance, 2));
+
+
+    scoreCounter += Math.floor(amount);
+    tweenAddScore.stop().to({ score: scoreCounter }, 1300).start();
   };
 
   this.isActive = function() {
@@ -254,10 +296,12 @@ var Grid = new (function() {
 
     gameContext.font = gameFontSmall;
     gameContext.textAlign = 'right';
-    drawText(gameContext, 180, 10, fontColor, 'Valid pairs');
-    drawText(gameContext, 180, 30, fontColor, 'Tiles remaining');
-    drawText(gameContext, 220, 10, fontColor, numValidPairs);
-    drawText(gameContext, 220, 30, fontColor, numTilesRemaining);
+    drawText(gameContext, 180, 10, fontColor, 'Tiles remaining');
+    drawText(gameContext, 260, 10, fontColor, numTilesRemaining);
+    drawText(gameContext, 180, 30, fontColor, 'Valid pairs');
+    drawText(gameContext, 260, 30, fontColor, numValidPairs);
+    drawText(gameContext, 180, 50, fontColor, 'Score');
+    drawText(gameContext, 260, 50, fontColor, score);
   };
 
   this.touch = function(x, y) {
@@ -305,6 +349,9 @@ var Grid = new (function() {
 
       if (tile1.tileType == tile2.tileType && (path = this.validPathBetweenTiles(tile1, tile2))) {
         Sounds.play('matched_pair');
+
+        addScore(tile1, tile2);
+
         tile1.match();
         tile2.match();
 
