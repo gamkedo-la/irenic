@@ -4,9 +4,6 @@ var Grid = new (function() {
   var numValidPairs = 0;
   var numTilesRemaining = 0;
   var numExtraRemaining = 0;
-  var score = 0;
-  var scoreCounter = 0;
-  var scoreType1, scoreType2;
   var matchesToFind = 0;
   var numHints = 0;
   var numShuffles = 0;
@@ -14,17 +11,15 @@ var Grid = new (function() {
   var extraTiles = [];
   var gameMode;
   var isActive = false;
+  var scoreDisplay = 0;
+  var score = 0;
+  var scoreType1, scoreType2;
+  var tweenAddScore;
   var tweenDataScore = {
     score: 0
   };
 
   var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS);
-
-  var tweenAddScore = new TWEEN.Tween(tweenDataScore)
-    .easing(TWEEN.Easing.Linear.None)
-    .onUpdate(function() {
-      score = Math.round(tweenDataScore.score);
-    });
 
   this.start = function(_gameMode) {
     if (_gameMode && gameModes[_gameMode]) {
@@ -39,7 +34,6 @@ var Grid = new (function() {
     var tileTypes = [];
     for (var t = 0; tileTypes.length < gameMode.numTileTypes; t++) {
       candidate = Math.floor(Math.random() * NUM_SPRITES);
-      // @todo generate a better set of tiles; not 'completely random'
       if (tileTypes.indexOf(candidate) == -1) {
         tileTypes.push(candidate);
       }
@@ -58,8 +52,14 @@ var Grid = new (function() {
     numHints = gameMode.numHints;
     numShuffles = gameMode.numShuffles;
 
+    scoreDisplay = 0;
     score = 0;
-    scoreCounter = 0;
+    tweenDataScore.score = 0;
+    tweenAddScore = new TWEEN.Tween(tweenDataScore)
+      .easing(TWEEN.Easing.Linear.None)
+      .onUpdate(function() {
+        scoreDisplay = Math.round(tweenDataScore.score);
+      });
 
     this.shuffle(tiles, true);
     if (gameMode.extraTileRows) {
@@ -89,9 +89,8 @@ var Grid = new (function() {
     var distance = Math.sqrt(vx * vx + vy * vy);
     amount *= (1 + Math.pow(distance / maxDistance, 2));
 
-
-    scoreCounter += Math.floor(amount);
-    tweenAddScore.stop().to({ score: scoreCounter }, 1300).start();
+    score += Math.floor(amount);
+    tweenAddScore.stop().to({ score: score }, 1300).start();
   };
 
   this.isActive = function() {
@@ -301,7 +300,7 @@ var Grid = new (function() {
     drawText(gameContext, 180, 30, fontColor, 'Valid pairs');
     drawText(gameContext, 260, 30, fontColor, numValidPairs);
     drawText(gameContext, 180, 50, fontColor, 'Score');
-    drawText(gameContext, 260, 50, fontColor, score);
+    drawText(gameContext, 260, 50, fontColor, scoreDisplay);
   };
 
   this.touch = function(x, y) {
@@ -364,7 +363,7 @@ var Grid = new (function() {
         if (matchesToFind == 0) {
           setTimeout(function() {
             isActive = false;
-            winGame();
+            winGame(score, numTilesRemaining);
           }, TIMEOUT_WON_GAME);
         }
       }
