@@ -28,7 +28,9 @@ var Buttons = new (function() {
   };
 
   var buttonQuit = function() {
-    Menu.activate();
+    if (confirm('Quit game and go back to menu?')) {
+      Menu.activate();
+    }
   };
 
   var buttonHint = function() {
