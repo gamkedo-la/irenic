@@ -13,6 +13,10 @@ var Images = new (function() {
     tiles_crosspoint_hover: 'img/tiles-crosspoint-hover.png',
     tiles_crosspoint_active: 'img/tiles-crosspoint-active.png',
 
+    tiles_hiragana: 'img/tiles-hiragana.png',
+    tiles_hiragana_hover: 'img/tiles-hiragana-hover.png',
+    tiles_hiragana_active: 'img/tiles-hiragana-active.png',
+
     background_classic: 'img/background-classic.png',
     background_crosspoint: 'img/background-crosspoint.png',
 
@@ -29,7 +33,8 @@ var Images = new (function() {
 
     button_classic: 'img/button-classic.png',
     button_numbers: 'img/button-numbers.png',
-    button_crosspoint: 'img/button-crosspoint.png'
+    button_crosspoint: 'img/button-crosspoint.png',
+    button_hiragana: 'img/button-hiragana.png'
   };
 
   this.initialize = function(callback) {

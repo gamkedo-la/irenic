@@ -47,6 +47,7 @@ var Menu = new (function() {
       buttons.push(new ButtonToggle(500, 100, 'theme', 'classic', Images.button_classic, false, buttonToggleTheme));
       buttons.push(new ButtonToggle(500, 160, 'theme', 'numbers', Images.button_numbers, false, buttonToggleTheme));
       buttons.push(new ButtonToggle(500, 220, 'theme', 'crosspoint', Images.button_crosspoint, false, buttonToggleTheme));
+      buttons.push(new ButtonToggle(500, 280, 'theme', 'hiragana', Images.button_hiragana, false, buttonToggleTheme));
 
       backButton = new ButtonText(100, 100, 'Back', buttonBack);
     }
