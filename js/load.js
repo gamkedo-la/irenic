@@ -34,7 +34,13 @@ var Images = new (function() {
     button_classic: 'img/button-classic.png',
     button_numbers: 'img/button-numbers.png',
     button_crosspoint: 'img/button-crosspoint.png',
-    button_hiragana: 'img/button-hiragana.png'
+    button_hiragana: 'img/button-hiragana.png',
+
+    tutorial_1: 'img/tutorial-straight.png',
+    tutorial_2: 'img/tutorial-adjacent.png',
+    tutorial_3: 'img/tutorial-1-corner.png',
+    tutorial_4: 'img/tutorial-2-corners.png',
+    tutorial_5: 'img/tutorial-2-corners-outside.png'
   };
 
   this.initialize = function(callback) {

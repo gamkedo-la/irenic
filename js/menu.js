@@ -3,6 +3,7 @@ var Menu = new (function() {
   var initialized = false;
   var showCredits = false;
   var showHiscore = false;
+  var showTutorial = false;
   var backButton;
 
   var tiles = [];
@@ -11,13 +12,14 @@ var Menu = new (function() {
 
   var colWidth;
   var canvasCenter;
-  var creditsLineHeight = 25;
+  var textLineHeight = 25;
   var hiscoreRowY;
 
   var buttons = [];
   var credits = [
-    'SpadXIII - Team lead, coding',
+    'Caspar Dunant - Team lead, coding',
     'Chris DeLeon - Tileset Crosspoint',
+    'Jeremy Kenyon - Tileset Hiragana',
     'Micky Turner - Sounds',
     ''
   ];
@@ -29,11 +31,25 @@ var Menu = new (function() {
   gameModesLabels[GAME_ADVANCED] = 'Advanced';
   gameModesLabels[GAME_FUNKY] = 'Funky';
 
+  var tutorial = [
+    'Find and click on pairs, connected by a straight,',
+    'uninterrupted line with a maximum of 2 corners.',
+    '',
+    'Scoring is 25 points for each pair. Bonus for second and',
+    'third pair of the same type and for longer distances.'
+  ];
+  var tutorialImages = {};
+  tutorialImages['tutorial_1'] = { x: 255, y: 410 };
+  tutorialImages['tutorial_2'] = { x: 470, y: 410 };
+  tutorialImages['tutorial_3'] = { x: 200, y: 590 };
+  tutorialImages['tutorial_4'] = { x: 360, y: 590 };
+  tutorialImages['tutorial_5'] = { x: 520, y: 590 };
+
   this.initialize = function() {
     if (!initialized) {
       canvasCenter = gameCanvas.width / 2;
       colWidth = (gameCanvas.width - 200) / 4;
-      hiscoreRowY = 200 + 2 * creditsLineHeight;
+      hiscoreRowY = 200 + 2 * textLineHeight;
 
       initialized = true;
 
@@ -41,8 +57,9 @@ var Menu = new (function() {
       buttons.push(new ButtonText(100, 150, 'Modern', buttonStartGame, GAME_MODERN));
       buttons.push(new ButtonText(100, 200, 'Advanced', buttonStartGame, GAME_ADVANCED));
       buttons.push(new ButtonText(100, 250, 'Funky', buttonStartGame, GAME_FUNKY));
-      buttons.push(new ButtonText(100, 325, 'Credits', buttonCredits));
+      buttons.push(new ButtonText(100, 325, 'How to play', buttonTutorial));
       buttons.push(new ButtonText(100, 375, 'Hiscore', buttonHiscore));
+      buttons.push(new ButtonText(100, 425, 'Credits', buttonCredits));
 
       buttons.push(new ButtonToggle(500, 100, 'theme', 'classic', Images.button_classic, false, buttonToggleTheme));
       buttons.push(new ButtonToggle(500, 160, 'theme', 'numbers', Images.button_numbers, false, buttonToggleTheme));
@@ -70,7 +87,7 @@ var Menu = new (function() {
     Buttons.update();
 
     var b = 0;
-    if (showCredits || showHiscore) {
+    if (showCredits || showHiscore || showTutorial) {
       backButton.update();
     }
     else {
@@ -104,7 +121,7 @@ var Menu = new (function() {
     }
 
     var i = 0;
-    if (showCredits || showHiscore) {
+    if (showCredits || showHiscore || showTutorial) {
       backButton.draw();
 
       gameContext.font = gameFontSmall;
@@ -113,13 +130,10 @@ var Menu = new (function() {
     }
 
     if (showCredits) {
-      _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + credits.length * creditsLineHeight, 16, 4, '#555', '#888');
-      for (i = 0; i < credits.length; i++) {
-        drawText(gameContext, canvasCenter, 200 + i * creditsLineHeight, '#fff', credits[i]);
-      }
+      drawTextAndBox(credits);
     }
     else if (showHiscore) {
-      _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + (2 + NUM_HISCORE) * creditsLineHeight, 16, 4, '#555', '#888');
+      _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + (2 + NUM_HISCORE) * textLineHeight, 16, 4, '#555', '#888');
 
       for (var g = 0; g < gameModes.length; g++) {
         var setting_name = 'hiscore_' + gameModes[g];
@@ -132,9 +146,21 @@ var Menu = new (function() {
         }
 
         for (i = 0; i < settings[setting_name].length; i++) {
-          drawText(gameContext, hiscoreRowX, hiscoreRowY + i * creditsLineHeight, '#fff', settings[setting_name][i]);
+          drawText(gameContext, hiscoreRowX, hiscoreRowY + i * textLineHeight, '#fff', settings[setting_name][i]);
         }
       }
+    }
+    else if (showTutorial) {
+      drawTextAndBox(tutorial);
+
+      gameContext.shadowOffsetX = 0;
+      gameContext.shadowOffsetY = 0;
+      gameContext.shadowBlur = 10;
+      gameContext.shadowColor = '#333';
+      for (i in tutorialImages) {
+        drawBitmapCenteredWithRotation(gameContext, Images[i], tutorialImages[i].x, tutorialImages[i].y);
+      }
+      gameContext.shadowBlur = 0;
     }
     else {
       for (i = 0; i < buttons.length; i++) {
@@ -143,6 +169,13 @@ var Menu = new (function() {
     }
 
     Buttons.draw();
+  };
+
+  var drawTextAndBox = function(text) {
+    _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + text.length * textLineHeight, 16, 4, '#555', '#888');
+    for (var i = 0; i < text.length; i++) {
+      drawText(gameContext, canvasCenter, 200 + i * textLineHeight, '#fff', text[i]);
+    }
   };
 
   this.isActive = function() {
@@ -176,9 +209,14 @@ var Menu = new (function() {
     showHiscore = !showHiscore;
   };
 
+  var buttonTutorial = function() {
+    showTutorial = !showTutorial;
+  };
+
   var buttonBack = function() {
     showCredits = false;
     showHiscore = false;
+    showTutorial = false;
   };
 
   var buttonToggleTheme = function(setting, theme) {
