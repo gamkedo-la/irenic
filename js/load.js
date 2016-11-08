@@ -19,6 +19,7 @@ var Images = new (function() {
 
     background_classic: 'img/background-classic.png',
     background_crosspoint: 'img/background-crosspoint.png',
+    background_hiragana: 'img/background-classic.png',
 
     button_sound_on: 'img/button-sound-on.png',
     button_sound_off: 'img/button-sound-off.png',
