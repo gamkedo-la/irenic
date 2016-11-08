@@ -435,19 +435,17 @@ var Grid = new (function() {
   this.getValidPairs = function() {
     var pairs = [];
 
-    var tilesCopy = tiles.slice();
-
-    for (var p1 = 0; p1 < tilesCopy.length - 1; p1++) {
-      if (!tilesCopy[p1] || tilesCopy[p1].matching) {
+    for (var p1 = 0; p1 < tiles.length - 1; p1++) {
+      if (!tiles[p1] || tiles[p1].matching) {
         continue;
       }
 
-      for (var p2 = p1 + 1; p2 < tilesCopy.length; p2++) {
-        if (!tilesCopy[p2] || tilesCopy[p2].matching || tilesCopy[p1].tileType != tilesCopy[p2].tileType) {
+      for (var p2 = p1 + 1; p2 < tiles.length; p2++) {
+        if (!tiles[p2] || tiles[p2].matching || tiles[p1].tileType != tiles[p2].tileType) {
           continue;
         }
 
-        if (this.validPathBetweenTiles(tilesCopy[p1], tilesCopy[p2])) {
+        if (this.validPathBetweenTiles(tiles[p1], tiles[p2])) {
           pairs.push([p1, p2]);
         }
       }
