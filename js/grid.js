@@ -173,7 +173,7 @@ var Grid = new (function() {
   this.shuffle = function(shuffleTiles, requirePair, loop) {
     this._shuffle(shuffleTiles, requirePair, loop);
     if (requirePair) {
-      // some tiles aren't set to their correct indexes??
+      Sounds.play('shuffle');
       this.animateTiles();
     }
   };
@@ -340,8 +340,10 @@ var Grid = new (function() {
     if (!tile1) {
       tile1 = tile;
       tile1.active = true;
+      Sounds.play('select');
     }
     else if (!tile2 && tile == tile1) {
+      Sounds.play('select');
       resetTouchedTiles();
     }
     else if (!tile2) {
@@ -371,6 +373,7 @@ var Grid = new (function() {
       }
       else {
         // @todo shake 'm
+        Sounds.play('wrong_pair');
         tile1.active = false;
         tile1 = tile;
         tile2 = false;
@@ -409,6 +412,8 @@ var Grid = new (function() {
     var pair = pairs[Math.floor(Math.random() * pairs.length)];
     tiles[pair[0]].hint();
     tiles[pair[1]].hint();
+
+    Sounds.play('hint');
   };
 
   this.removeValidPair = function() {

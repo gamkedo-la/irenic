@@ -82,7 +82,27 @@ var Sounds = new (function() {
     // key_theme: 'sfx/file_name'
     matched_pair_classic: 'audio/Gong',
     matched_pair_numbers: 'audio/Bamboo',
-    matched_pair_crosspoint: 'audio/Oriental'
+    matched_pair_crosspoint: 'audio/Oriental',
+
+    shuffle_classic: 'audio/Shuffle 1',
+    shuffle_numbers: 'audio/Shuffle 1',
+    shuffle_crosspoint: 'audio/Shuffle 1',
+    shuffle_hiragana: 'audio/Shuffle 1',
+
+    select_classic: 'audio/Button Karate',
+    select_numbers: 'audio/Button Karate',
+    select_crosspoint: 'audio/Button Karate',
+    select_hiragana: 'audio/Button Karate',
+
+    wrong_pair_classic: 'audio/Button Karate 2',
+    wrong_pair_numbers: 'audio/Button Karate 2',
+    wrong_pair_crosspoint: 'audio/Button Karate 2',
+    wrong_pair_hiragana: 'audio/Button Karate 2',
+
+    hint_classic: 'audio/Hint',
+    hint_numbers: 'audio/Hint',
+    hint_crosspoint: 'audio/Hint',
+    hint_hiragana: 'audio/Hint'
   };
 
   this.initialize = function(callback) {
