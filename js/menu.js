@@ -17,11 +17,11 @@ var Menu = new (function() {
 
   var buttons = [];
   var credits = [
-    'Caspar Dunant - Team lead, coding',
+    'Caspar Dunant - Team lead, coding,',
+    'Tileset Classic & Numbers',
     'Chris DeLeon - Tileset Crosspoint',
     'Jeremy Kenyon - Tileset Hiragana',
-    'Micky Turner - Sounds',
-    ''
+    'Micky Turner - Sounds'
   ];
 
   var gameModes = [GAME_NORMAL, GAME_MODERN, GAME_ADVANCED, GAME_FUNKY];
