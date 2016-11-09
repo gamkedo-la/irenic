@@ -34,10 +34,6 @@ function isArray(obj) {
   return (Object.prototype.toString.call(obj) === '[object Array]');
 }
 
-function padLeft(nr, n, str) {
-  return Array(n - String(nr).length + 1).join(str || '0') + nr;
-}
-
 function sortHiscore(a, b) {
   return b - a;
 }
@@ -52,27 +48,6 @@ Array.prototype.unique = function() {
 
   return a;
 };
-
-var fontHeightCache = [];
-function determineFontHeight(font) {
-  var result = fontHeightCache[font];
-
-  if (!result) {
-    var body = document.getElementsByTagName('body')[0];
-    var dummy = document.createElement('div');
-
-    var dummyText = document.createTextNode('(AbqMjgL');
-    dummy.appendChild(dummyText);
-    dummy.setAttribute('style', 'font:' + font + ';position:absolute;top:0;left:0;margin:0;padding:0');
-    body.appendChild(dummy);
-    result = dummy.offsetHeight;
-
-    fontHeightCache[font] = result;
-    body.removeChild(dummy);
-  }
-
-  return result;
-}
 
 function random(min, max, isFloat) {
   if (isFloat) {
