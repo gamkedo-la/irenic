@@ -40,6 +40,11 @@ var Tile = function(tileIndex) {
       y: this.row * (TILE_HEIGHT + TILE_GAP) + GRID_PADDING_HEIGHT + halfHeight
     };
 
+    // Skip moving if we're still in the same spot
+    if (this.x == coordsTo.x && this.y == coordsTo.y) {
+      return this;
+    }
+
     var t = this;
 
     if (tween) {
@@ -123,6 +128,10 @@ var Tile = function(tileIndex) {
   this.match = function() {
     // @todo removal particle/animation
     this.matching = 500;
+  };
+
+  this.isMatched = function() {
+    return this.matching > 0;
   };
 
   this.hint = function() {

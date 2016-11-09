@@ -44,8 +44,8 @@ var Grid = new (function() {
     tiles = this.generateTiles(numTiles, tileTypes);
 
     extraTiles = [];
-    if (gameMode.extraTileRows) {
-      extraTiles = this.generateTiles(gameMode.extraTileRows * GRID_COLS, tileTypes);
+    if (gameMode.extraTileCols && gameMode.extraTileRows) {
+      extraTiles = this.generateTiles(gameMode.extraTileRows * gameMode.extraTileCols, tileTypes);
     }
 
     numExtraRemaining = extraTiles.length;
@@ -137,7 +137,7 @@ var Grid = new (function() {
     var i;
 
     for (i = 0; i < shuffleTiles.length; i++) {
-      if (!shuffleTiles[i] || shuffleTiles[i].matching) {
+      if (!shuffleTiles[i] || shuffleTiles[i].isMatched()) {
         continue;
       }
       indexes.push(i);
@@ -180,7 +180,7 @@ var Grid = new (function() {
 
   this.animateTiles = function() {
     for (var i = numTiles; i >= 0; i--) {
-      if (tiles[i] && !tiles[i].matching) {
+      if (tiles[i] && !tiles[i].isMatched()) {
         tiles[i].moveIntoPosition();
       }
     }
@@ -213,10 +213,79 @@ var Grid = new (function() {
       return false;
     }
 
-    switch (gameMode.gravityType) {
+    var gravityType = gameMode.gravityType;
+    if (gravityType == GRAVITY_FUNKY) {
+      gravityType = gravityTypes[Math.floor(Math.random() * gravityTypes.length)];
+    }
+
+    switch (gravityType) {
       case GRAVITY_DOWN:
         this.updateGravityDown(updateTileIndexes);
         break;
+      case GRAVITY_SIDES:
+        this.updateGravitySides(updateTileIndexes);
+        break;
+    }
+  };
+
+  this.updateGravitySides = function(tileIndexes) {
+    var centerCol = Math.floor(GRID_COLS / 2);
+    var i;
+
+    var tileCoords = [];
+
+    for (i = 0; i < tileIndexes.length; i++) {
+      tileCoords.push({ col: this.indexToCol(tileIndexes[i]), row: this.indexToRow(tileIndexes[i]) });
+    }
+
+    tileCoords.sort(function(a, b) {
+      if (a.row == b.row) {
+        if (a.col < centerCol && b.col < centerCol) {
+          return a.col - b.col;
+        }
+        if (centerCol <= a.col && centerCol <= b.col) {
+          return b.col - a.col;
+        }
+      }
+
+      return 0;
+    });
+
+    for (i = 0; i < tileCoords.length; i++) {
+      this._updateGravitySide(tileCoords[i].col, tileCoords[i].row);
+    }
+  };
+
+  this._updateGravitySide = function(col, row) {
+    var centerCol = Math.floor(GRID_COLS / 2);
+    var dCol = -1;
+    var stopCol = centerCol - 1;
+    if (col < centerCol) {
+      dCol = 1;
+      stopCol = centerCol;
+    }
+
+    for (var i = col; i != stopCol; i += dCol) {
+      var index = this.tileToIndex(i, row);
+      var indexTo = this.tileToIndex(i - dCol, row);
+      if (tiles[index] && !tiles[index].isMatched()) {
+        tiles[indexTo] = tiles[index];
+        tiles[indexTo].placeAtIndex(indexTo);
+        tiles[index].moveIntoPosition();
+        tiles.splice(index, 1, false);
+      }
+    }
+
+    // Add extra tile for this row
+    for (var e = row; e < extraTiles.length; e += GRID_ROWS) {
+      if (extraTiles[e]) {
+        tiles[index] = extraTiles[e];
+        tiles[index].placeAtIndex(index);
+        tiles[index].moveIntoPosition(200);
+        extraTiles.splice(e, 1, false);
+        numExtraRemaining--;
+        break;
+      }
     }
   };
 
@@ -436,12 +505,12 @@ var Grid = new (function() {
     var pairs = [];
 
     for (var p1 = 0; p1 < tiles.length - 1; p1++) {
-      if (!tiles[p1] || tiles[p1].matching) {
+      if (!tiles[p1] || tiles[p1].isMatched()) {
         continue;
       }
 
       for (var p2 = p1 + 1; p2 < tiles.length; p2++) {
-        if (!tiles[p2] || tiles[p2].matching || tiles[p1].tileType != tiles[p2].tileType) {
+        if (!tiles[p2] || tiles[p2].isMatched() || tiles[p1].tileType != tiles[p2].tileType) {
           continue;
         }
 
@@ -593,7 +662,7 @@ var Grid = new (function() {
     for (var c = minCol; c <= maxCol; c++) {
       for (var r = minRow; r <= maxRow; r++) {
         checkTile = this.getTileAt(c, r);
-        if (checkTile && !checkTile.matching && checkTile != tile1 && checkTile != tile2) {
+        if (checkTile && !checkTile.isMatched() && checkTile != tile1 && checkTile != tile2) {
           return false;
         }
       }
@@ -641,7 +710,7 @@ var Grid = new (function() {
 
   this.isActiveTileAt = function(col, row) {
     var tile = this.getTileAt(col, row);
-    return tile && !tile.matching;
+    return tile && !tile.isMatched();
   };
 
   this.coordsToArrayIndex = function(x, y) {
