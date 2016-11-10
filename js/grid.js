@@ -364,6 +364,10 @@ var Grid = new (function() {
       }
     }
 
+    gameContext.shadowOffsetX = 0;
+    gameContext.shadowOffsetY = 0;
+    gameContext.shadowBlur = 10;
+    gameContext.shadowColor = '#333';
     gameContext.font = gameFontSmall;
     gameContext.textAlign = 'right';
     drawText(gameContext, 180, 10, fontColor, 'Tiles remaining');
@@ -372,6 +376,12 @@ var Grid = new (function() {
     drawText(gameContext, 260, 30, fontColor, numValidPairs);
     drawText(gameContext, 180, 50, fontColor, 'Score');
     drawText(gameContext, 260, 50, fontColor, scoreDisplay);
+
+
+    gameContext.textBaseline = 'top';
+    gameContext.textAlign = 'center';
+    drawText(gameContext, gameCanvas.width / 2, 50, fontColor, gameMode.label);
+    gameContext.shadowBlur = 0;
   };
 
   this.touch = function(x, y) {

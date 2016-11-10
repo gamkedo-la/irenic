@@ -31,7 +31,7 @@ MainLoop.setDraw = function(fun) {
     gameContext.font = titleFont;
     gameContext.textBaseline = 'top';
     gameContext.textAlign = 'center';
-    drawText(gameContext, gameCanvas.width / 2, 10, fontColor, 'Irenic');
+    drawText(gameContext, gameCanvas.width / 2, 7, fontColor, 'Irenic');
     gameContext.shadowBlur = 0;
     redrawCanvas();
   });

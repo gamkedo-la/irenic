@@ -24,13 +24,6 @@ var Menu = new (function() {
     'Micky Turner - Sounds'
   ];
 
-  var gameModes = [GAME_NORMAL, GAME_MODERN, GAME_ADVANCED, GAME_FUNKY];
-  var gameModesLabels = {};
-  gameModesLabels[GAME_NORMAL] = 'Normal';
-  gameModesLabels[GAME_MODERN] = 'Modern';
-  gameModesLabels[GAME_ADVANCED] = 'Advanced';
-  gameModesLabels[GAME_FUNKY] = 'Funky';
-
   var tutorial = [
     'Find and click on pairs, connected by a straight,',
     'uninterrupted line with a maximum of 2 corners.',
@@ -53,10 +46,10 @@ var Menu = new (function() {
 
       initialized = true;
 
-      buttons.push(new ButtonText(100, 100, 'Normal', buttonStartGame, GAME_NORMAL));
-      buttons.push(new ButtonText(100, 150, 'Modern', buttonStartGame, GAME_MODERN));
-      buttons.push(new ButtonText(100, 200, 'Advanced', buttonStartGame, GAME_ADVANCED));
-      buttons.push(new ButtonText(100, 250, 'Funky', buttonStartGame, GAME_FUNKY));
+      buttons.push(new ButtonText(100, 100, gameModes[GAME_NORMAL].label, buttonStartGame, GAME_NORMAL));
+      buttons.push(new ButtonText(100, 150, gameModes[GAME_MODERN].label, buttonStartGame, GAME_MODERN));
+      buttons.push(new ButtonText(100, 200, gameModes[GAME_ADVANCED].label, buttonStartGame, GAME_ADVANCED));
+      buttons.push(new ButtonText(100, 250, gameModes[GAME_FUNKY].label, buttonStartGame, GAME_FUNKY));
       buttons.push(new ButtonText(100, 325, 'How to play', buttonTutorial));
       buttons.push(new ButtonText(100, 375, 'Hiscore', buttonHiscore));
       buttons.push(new ButtonText(100, 425, 'Credits', buttonCredits));
@@ -135,11 +128,11 @@ var Menu = new (function() {
     else if (showHiscore) {
       _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + (2 + NUM_HISCORE) * textLineHeight, 16, 4, '#555', '#888');
 
-      for (var g = 0; g < gameModes.length; g++) {
-        var setting_name = 'hiscore_' + gameModes[g];
+      for (var g = 0; g < gameModeKeys.length; g++) {
+        var setting_name = 'hiscore_' + gameModeKeys[g];
         var hiscoreRowX = 100 + g * colWidth + colWidth / 2;
 
-        drawText(gameContext, hiscoreRowX, 200, '#fff', gameModesLabels[gameModes[g]]);
+        drawText(gameContext, hiscoreRowX, 200, '#fff', gameModes[gameModeKeys[g]].label);
 
         if (!settings[setting_name]) {
           continue;
@@ -270,10 +263,10 @@ var ButtonText = function(x, y, label, callback, callbackArguments) {
 
   var cornerSize = 10,
     lineWidth = 4,
-    fontColorHover = '#f00',
+    fontColorHover = '#d00',
     fillStyle = '#555',
     strokeStyle = '#888',
-    strokeStyleHover = '#f00';
+    strokeStyleHover = '#d00';
 
   this.update = function() {
     button.update();
