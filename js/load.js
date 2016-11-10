@@ -5,9 +5,9 @@ var Images = new (function() {
     tiles_classic_hover: 'img/tiles-classic-hover.png',
     tiles_classic_active: 'img/tiles-classic-active.png',
 
-    tiles_numbers: 'img/tiles-numbers.png',
-    tiles_numbers_hover: 'img/tiles-numbers-hover.png',
-    tiles_numbers_active: 'img/tiles-numbers-active.png',
+    tiles_flat: 'img/tiles-flat.png',
+    tiles_flat_hover: 'img/tiles-flat-hover.png',
+    tiles_flat_active: 'img/tiles-flat-active.png',
 
     tiles_crosspoint: 'img/tiles-crosspoint.png',
     tiles_crosspoint_hover: 'img/tiles-crosspoint-hover.png',
@@ -18,6 +18,7 @@ var Images = new (function() {
     tiles_hiragana_active: 'img/tiles-hiragana-active.png',
 
     background_classic: 'img/background-classic.png',
+    background_flat: 'img/background-classic.png',
     background_crosspoint: 'img/background-crosspoint.png',
     background_hiragana: 'img/background-classic.png',
 
@@ -33,7 +34,7 @@ var Images = new (function() {
     button_shuffle_off: 'img/button-shuffle-off.png',
 
     button_classic: 'img/button-classic.png',
-    button_numbers: 'img/button-numbers.png',
+    button_flat: 'img/button-flat.png',
     button_crosspoint: 'img/button-crosspoint.png',
     button_hiragana: 'img/button-hiragana.png',
 
@@ -82,26 +83,26 @@ var Sounds = new (function() {
   var sounds = {
     // key_theme: 'sfx/file_name'
     matched_pair_classic: 'audio/Gong',
-    matched_pair_numbers: 'audio/Bamboo',
+    matched_pair_flat: 'audio/Bamboo',
     matched_pair_crosspoint: 'audio/Oriental',
 
     shuffle_classic: 'audio/Shuffle 1',
-    shuffle_numbers: 'audio/Shuffle 1',
+    shuffle_flat: 'audio/Shuffle 1',
     shuffle_crosspoint: 'audio/Shuffle 1',
     shuffle_hiragana: 'audio/Shuffle 1',
 
     select_classic: 'audio/Button Karate',
-    select_numbers: 'audio/Button Karate',
+    select_flat: 'audio/Button Karate',
     select_crosspoint: 'audio/Button Karate',
     select_hiragana: 'audio/Button Karate',
 
     wrong_pair_classic: 'audio/Button Karate 2',
-    wrong_pair_numbers: 'audio/Button Karate 2',
+    wrong_pair_flat: 'audio/Button Karate 2',
     wrong_pair_crosspoint: 'audio/Button Karate 2',
     wrong_pair_hiragana: 'audio/Button Karate 2',
 
     hint_classic: 'audio/Hint',
-    hint_numbers: 'audio/Hint',
+    hint_flat: 'audio/Hint',
     hint_crosspoint: 'audio/Hint',
     hint_hiragana: 'audio/Hint'
   };
