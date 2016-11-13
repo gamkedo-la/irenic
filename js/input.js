@@ -51,14 +51,16 @@ function clickOrTouch(event) {
 }
 
 function keyPress(event) {
-  if (Grid.isActive() && event.keyCode == KEY_ESC) {
-    Grid.quitGame();
-  }
-  else if (EndGame.isActive()) {
-    EndGame.pressEscape();
-  }
-  else if (Menu.isActive()) {
-    Menu.pressEscape();
+  if (event.keyCode == KEY_ESC) {
+    if (Grid.isActive()) {
+      Grid.pressEscape();
+    }
+    else if (EndGame.isActive()) {
+      EndGame.pressEscape();
+    }
+    else if (Menu.isActive()) {
+      Menu.pressEscape();
+    }
   }
 }
 

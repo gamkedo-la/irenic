@@ -12,6 +12,9 @@ var Grid = new (function() {
   var gameModeKey;
   var gameMode;
   var isActive = false;
+  var isPaused = false;
+  var canvasCenter, textBoxWidth, textBoxHeight;
+  var buttonResume, buttonQuit;
   var scoreDisplay = 0;
   var score = 0;
   var scoreType1, scoreType2;
@@ -74,6 +77,16 @@ var Grid = new (function() {
     }
 
     isActive = true;
+    isPaused = false;
+
+    if (!buttonQuit) {
+      textBoxWidth = gameCanvas.width - 200;
+      textBoxHeight = 20 + 2 * textLineHeight;
+      canvasCenter = gameCanvas.width / 2;
+
+      buttonResume = new ButtonText(canvasCenter - 225, textBoxHeight + 125, 'Resume', buttonResumeCallback);
+      buttonQuit = new ButtonText(canvasCenter + 25, textBoxHeight + 125, 'Quit', buttonQuitCallback);
+    }
   };
 
   var addScore = function(tile1, tile2) {
@@ -203,6 +216,16 @@ var Grid = new (function() {
   };
 
   this.update = function(time) {
+    if (!isActive) {
+      return;
+    }
+
+    if (isPaused) {
+      buttonResume.update();
+      buttonQuit.update();
+      return;
+    }
+
     var updateTileIndexes = [];
     for (var i = numTiles - 1; i >= 0; i--) {
       if (!tiles[i]) {
@@ -374,12 +397,6 @@ var Grid = new (function() {
   };
 
   this.draw = function(time) {
-    for (var i = 0; i < numTiles; i++) {
-      if (tiles[i]) {
-        tiles[i].draw(time);
-      }
-    }
-
     gameContext.shadowOffsetX = 0;
     gameContext.shadowOffsetY = 0;
     gameContext.shadowBlur = 10;
@@ -393,14 +410,40 @@ var Grid = new (function() {
     drawText(gameContext, 180, 50, fontColor, 'Score');
     drawText(gameContext, 260, 50, fontColor, scoreDisplay);
 
-
     gameContext.textBaseline = 'top';
     gameContext.textAlign = 'center';
-    drawText(gameContext, gameCanvas.width / 2, 50, fontColor, gameMode.label);
+    drawText(gameContext, canvasCenter, 50, fontColor, gameMode.label);
     gameContext.shadowBlur = 0;
+
+    if (isPaused) {
+      // @todo draw pause menu
+      _drawTextBoxBorder(gameContext, 100, 100, textBoxWidth, textBoxHeight, 16, 4, '#555', '#888');
+      drawText(gameContext, canvasCenter, 100 + textLineHeight, fontColor, 'Quit to menu?');
+      buttonResume.draw();
+      buttonQuit.draw();
+      return;
+    }
+
+    for (var i = 0; i < numTiles; i++) {
+      if (tiles[i]) {
+        tiles[i].draw(time);
+      }
+    }
+  };
+
+  var buttonResumeCallback = function() {
+    isPaused = false;
+  };
+
+  var buttonQuitCallback = function() {
+    Menu.activate();
   };
 
   this.touch = function(x, y) {
+    if (!isActive || isPaused) {
+      return;
+    }
+
     var index = this.coordsToArrayIndex(x, y);
     if (index >= 0 && tiles[index]) {
       this._touch(tiles[index]);
@@ -511,14 +554,12 @@ var Grid = new (function() {
     Sounds.play('hint');
   };
 
-  this.quitGame = function() {
+  this.pressEscape = function() {
     if (!isActive) {
       return;
     }
 
-    if (confirm('Quit game and go back to menu?')) {
-      Menu.activate();
-    }
+    isPaused = true;
   };
 
   this.removeValidPair = function() {

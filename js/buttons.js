@@ -33,7 +33,7 @@ var Buttons = new (function() {
   };
 
   var buttonQuit = function() {
-    Grid.quitGame();
+    Grid.pressEscape();
   };
 
   var buttonHint = function() {
