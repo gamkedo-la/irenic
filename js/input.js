@@ -51,8 +51,11 @@ function clickOrTouch(event) {
 }
 
 function keyPress(event) {
-  if (!Menu.isActive() && event.keyCode == KEY_ESC) {
-    Menu.activate();
+  if (Grid.isActive() && event.keyCode == KEY_ESC) {
+    Grid.quitGame();
+  }
+  else if (Menu.isActive()) {
+    Menu.pressEscape();
   }
 }
 

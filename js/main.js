@@ -37,6 +37,16 @@ MainLoop.setDraw = function(fun) {
   });
 };
 
+// Make sure TWEEN.update is called each update-cycle by default.
+var MainLoop_setUpdate = MainLoop.setUpdate;
+MainLoop.setUpdate = function(fun) {
+  fun = fun || function() {};
+  return MainLoop_setUpdate.call(this, function(delta) {
+    fun(delta);
+    TWEEN.update();
+  });
+};
+
 window.onload = function() {
   gameCanvas = document.getElementById('gameCanvas');
   gameContext = gameCanvas.getContext('2d');
@@ -67,6 +77,7 @@ function menuInitialize() {
   setupInput();
   Buttons.initialize();
   Menu.initialize();
+  EndGame.initialize();
 
   var loading = document.getElementById('loading');
   loading.style.display = 'none';
@@ -89,34 +100,6 @@ function shakeScreen(amount) {
   screenShakeAmount = amount;
 }
 
-function endGame(gameMode, score, numTilesRemaining) {
-  var message = [];
-  if (numTilesRemaining == 0) {
-    message.push('You won!');
-  }
-  else {
-    message.push('Oops! Game over...');
-  }
-
-  // Show hiscores
-  var setting_name = 'hiscore_' + gameMode;
-  if (!settings[setting_name]) {
-    // Empty score, add first one!
-    settings[setting_name] = [score];
-  }
-  else {
-    settings[setting_name].push(score);
-    settings[setting_name] = settings[setting_name].sort(sortHiscore).slice(0, NUM_HISCORE);
-  }
-  setSetting(setting_name, settings[setting_name]);
-
-  // @todo do something else..
-  alert(message.join(' '));
-
-  Particles.clear();
-  Menu.activate();
-}
-
 function setSetting(setting, value) {
   settings[setting] = value;
 
@@ -135,7 +118,6 @@ function gameUpdate(delta) {
   Buttons.update();
   Grid.update(delta);
   Particles.update(delta);
-  TWEEN.update();
 }
 
 function gameDraw(interpolationPercentage) {

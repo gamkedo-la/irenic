@@ -33,9 +33,7 @@ var Buttons = new (function() {
   };
 
   var buttonQuit = function() {
-    if (confirm('Quit game and go back to menu?')) {
-      Menu.activate();
-    }
+    Grid.quitGame();
   };
 
   var buttonHint = function() {

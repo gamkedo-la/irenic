@@ -12,7 +12,6 @@ var Menu = new (function() {
 
   var colWidth;
   var canvasCenter;
-  var textLineHeight = 25;
   var hiscoreRowY;
 
   var buttons = [];
@@ -204,6 +203,10 @@ var Menu = new (function() {
 
   var buttonTutorial = function() {
     showTutorial = !showTutorial;
+  };
+
+  this.pressEscape = function() {
+    buttonBack();
   };
 
   var buttonBack = function() {

@@ -20,6 +20,11 @@ var Grid = new (function() {
     score: 0
   };
 
+  var totalTiles = 0;
+  var totalBaseScore = 0;
+  var totalBonus = 0;
+  var totalLengthMultiplier = 0;
+
   var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS);
 
   this.start = function(_gameMode) {
@@ -73,14 +78,20 @@ var Grid = new (function() {
 
   var addScore = function(tile1, tile2) {
     var amount = 25;
+    var bonus = 0;
+
+    totalTiles += 2;
+    totalBaseScore += amount;
 
     if (scoreType1 == tile1.tileType) {
-      amount = 35;
+      bonus = 10;
 
       if (scoreType2 == tile1.tileType) {
-        amount = 45;
+        bonus = 20;
       }
     }
+    amount += bonus;
+    totalBonus += bonus;
 
     scoreType2 = scoreType1;
     scoreType1 = tile1.tileType;
@@ -89,7 +100,9 @@ var Grid = new (function() {
     var vx = tile1.col - tile2.col;
     var vy = tile1.row - tile2.row;
     var distance = Math.sqrt(vx * vx + vy * vy);
-    amount *= (1 + Math.pow(distance / maxDistance, 2));
+    var multiplier = (1 + Math.pow(distance / maxDistance, 2));
+    totalLengthMultiplier += multiplier;
+    amount *= multiplier;
 
     score += Math.floor(amount);
     tweenAddScore.stop().to({ score: score }, 1300).start();
@@ -107,7 +120,10 @@ var Grid = new (function() {
     var candidate;
     var result = [];
     var numCandidates = Math.floor(amount / tileTypes.length);
-    for (var n = 0; n < tileTypes.length; n++) {
+    if (numCandidates < 2) {
+      numCandidates = 2;
+    }
+    for (var n = 0; n < tileTypes.length && result.length < amount; n++) {
       for (var a = 0; a < numCandidates; a++) {
         result.push(new Tile(tileTypes[n]));
       }
@@ -446,7 +462,7 @@ var Grid = new (function() {
         if (matchesToFind == 0) {
           setTimeout(function() {
             isActive = false;
-            endGame(gameModeKey, score, numTilesRemaining);
+            EndGame.activate(gameModeKey, score, numTilesRemaining, totalTiles, totalBaseScore, totalBonus, totalLengthMultiplier);
           }, TIMEOUT_WON_GAME);
         }
       }
@@ -493,6 +509,16 @@ var Grid = new (function() {
     tiles[pair[1]].hint();
 
     Sounds.play('hint');
+  };
+
+  this.quitGame = function() {
+    if (!isActive) {
+      return;
+    }
+
+    if (confirm('Quit game and go back to menu?')) {
+      Menu.activate();
+    }
   };
 
   this.removeValidPair = function() {
