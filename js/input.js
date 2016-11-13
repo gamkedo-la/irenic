@@ -54,6 +54,9 @@ function keyPress(event) {
   if (Grid.isActive() && event.keyCode == KEY_ESC) {
     Grid.quitGame();
   }
+  else if (EndGame.isActive()) {
+    EndGame.pressEscape();
+  }
   else if (Menu.isActive()) {
     Menu.pressEscape();
   }

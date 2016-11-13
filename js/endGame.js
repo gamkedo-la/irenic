@@ -170,6 +170,10 @@ var EndGame = new (function() {
     isActive = false;
   };
 
+  this.pressEscape = function() {
+    buttonOkCallback();
+  };
+
   var buttonOkCallback = function() {
     isActive = false;
     Menu.activate();
