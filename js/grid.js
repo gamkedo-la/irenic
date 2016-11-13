@@ -241,6 +241,7 @@ var Grid = new (function() {
 
     if (matchesToFind > 0 && updateTileIndexes.length > 0) {
       this.updateGravity(updateTileIndexes);
+      numValidPairs = this.numValidPairs();
       if (numValidPairs == 0) {
         this.shuffle(tiles, true);
       }
@@ -501,7 +502,6 @@ var Grid = new (function() {
         resetTouchedTiles();
         matchesToFind--;
         numTilesRemaining -= 2;
-        numValidPairs = this.numValidPairs();
         if (matchesToFind == 0) {
           setTimeout(function() {
             isActive = false;
@@ -516,6 +516,17 @@ var Grid = new (function() {
         tile1 = tile;
         tile2 = false;
       }
+    }
+  };
+
+  this.debugTiles = function() {
+    for (var i = 0; i < tiles.length; i++) {
+      console.log('tile', i, tiles[i].tileType);
+    }
+
+    var pairs = this.getValidPairs();
+    for (var p = 0; p < pairs.length; p++) {
+      console.log('pair', p, tiles[pairs[p][0]].tileType, tiles[pairs[p][1]].tileType, this.validPathBetweenTiles(tiles[pairs[p][0]], tiles[pairs[p][1]]));
     }
   };
 
@@ -596,7 +607,6 @@ var Grid = new (function() {
         }
       }
     }
-
 
     return pairs;
   };
