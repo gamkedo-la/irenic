@@ -1,5 +1,4 @@
 var EndGame = new (function() {
-  var tween;
   var tweenBaseScore;
   var tweenBonus;
   var tweenMultiplier;
@@ -43,15 +42,6 @@ var EndGame = new (function() {
     titleY = 100 + textLineHeight;
 
     buttonOk = new ButtonText(100, 325, 'Ok', buttonOkCallback);
-
-    tween = new TWEEN.Tween(tweenData)
-      .easing(TWEEN.Easing.Linear.None)
-      .onUpdate(function() {
-        displayData.baseScore = Math.round(tweenData.baseScore);
-        displayData.bonus = Math.round(tweenData.bonus);
-        displayData.lengthMultiplier = Math.round(tweenData.lengthMultiplier);
-        displayData.score = Math.round(tweenData.score);
-      });
 
     tweenBaseScore = new TWEEN.Tween(tweenData)
       .easing(TWEEN.Easing.Linear.None)
