@@ -210,7 +210,7 @@ var ParticleRemovePair = function(tileType, p1, p2) {
 
   var leftXs = [
     leftPos.x,
-    Math.max(0, leftPos.x - canvasHalfWidth),
+    0,
     canvasHalfWidth - halfWidth - TILE_GAP / 2
   ];
   var leftYs = [
@@ -226,7 +226,7 @@ var ParticleRemovePair = function(tileType, p1, p2) {
 
   var rightXs = [
     rightPos.x,
-    Math.min(gameCanvas.width, leftPos.x + canvasHalfWidth),
+    gameCanvas.width,
     canvasHalfWidth + halfWidth + TILE_GAP / 2
   ];
   var rightYs = [
