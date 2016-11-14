@@ -8,8 +8,8 @@ const GRID_PADDING_WIDTH = 44;
 const GRID_PADDING_HEIGHT = 100;
 
 // 14x13 fills the whole board
-const GRID_COLS = 4;
-const GRID_ROWS = 3;
+const GRID_COLS = 14;
+const GRID_ROWS = 13;
 
 const NUM_SPRITES = 42;
 const SPRITE_COLS = 9;
@@ -18,6 +18,10 @@ const NUM_HISCORE = 5;
 const TIMEOUT_IS_MATCH = 700;
 const TIMEOUT_NO_MATCH = 1200;
 const TIMEOUT_WON_GAME = 800;
+
+const REMOVE_MOVEMENT_TIME = 500;
+const REMOVE_BOUNCE_TIME = 1000;
+const REMOVE_SMOKE_TIME = 400;
 
 const KEY_ESC = 27;
 

@@ -110,6 +110,13 @@ var Tile = function(tileIndex) {
     gameContext.restore();
   };
 
+  this.coords = function() {
+    return {
+      x: this.x,
+      y: this.y
+    };
+  };
+
   this.bounds = function() {
     return {
       top: this.y - halfHeight,
@@ -127,7 +134,7 @@ var Tile = function(tileIndex) {
 
   this.match = function() {
     // @todo removal particle/animation
-    this.matching = 500;
+    this.matching = 300;
   };
 
   this.isMatched = function() {

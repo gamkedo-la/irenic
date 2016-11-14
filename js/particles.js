@@ -1,12 +1,8 @@
 var Particles = new (function() {
   var list = [];
 
-  this.push = function(item) {
-    list.push(item);
-  };
-
   this.spawn = function(particleClass) {
-    this.push(createObjectFrom.apply(null, arguments));
+    list.unshift(createObjectFrom.apply(null, arguments));
   };
 
   this.update = function(delta) {
@@ -146,6 +142,143 @@ var ParticleLightning = function(points) {
     results.push(dest);
 
     return results;
+  };
+};
+
+var ParticleSmoke = function() {
+  this.readyToRemove = true;
+
+  var x = gameCanvas.width / 2;
+  var y = GRID_PADDING_HEIGHT;
+
+  var speedX = random(-1, 1, true);
+  var speedY = random(-0.95, -1.05, true);
+  var rotationSpeed = random(-0.05, 0.05, true);
+
+  var age = random(REMOVE_SMOKE_TIME * 0.7, REMOVE_SMOKE_TIME, true);
+  var scale = random(0.3, 0.6, true);
+  var angle = random(-Math.PI, Math.PI, true);
+  var alpha = random(0.7, 0.95, true);
+
+  var speedDecay = 0.975;
+  var scaleDecay = 1.02;
+  var rotationDecay = 0.98;
+  var alphaDecay = 0.95;
+
+  this.update = function(delta) {
+    age -= delta;
+    this.readyToRemove = (age < 0);
+
+    angle += rotationSpeed;
+    x += speedX;
+    y += speedY;
+
+    speedX *= speedDecay;
+    speedY *= speedDecay;
+
+    rotationSpeed *= rotationDecay;
+    scale *= scaleDecay;
+    alpha *= alphaDecay;
+  };
+
+  this.draw = function() {
+    drawBitmapCenteredWithScaleAndRotationAndAlpha(gameContext, Images.smoke, x, y, scale, angle, alpha);
+  };
+};
+
+var ParticleRemovePair = function(tileType, p1, p2) {
+  this.readyToRemove = false;
+  var that = this;
+
+  var halfWidth = TILE_WIDTH / 2;
+  var halfHeight = TILE_HEIGHT / 2;
+  var canvasHalfWidth = gameCanvas.width / 2;
+  var canvasHalfHeight = gameCanvas.height / 2;
+
+  var imageName = 'tiles_' + settings['theme'];
+  var spriteCol = Grid.indexToCol(tileType, SPRITE_COLS);
+  var spriteRow = Grid.indexToRow(tileType, SPRITE_COLS);
+  var spriteX = spriteCol * TILE_WIDTH;
+  var spriteY = spriteRow * TILE_HEIGHT;
+
+  var leftPos = p1;
+  var rightPos = p2;
+  if (p1.x > p2.x) {
+    leftPos = p2;
+    rightPos = p1;
+  }
+
+  var leftXs = [
+    leftPos.x,
+    Math.max(0, leftPos.x - canvasHalfWidth),
+    canvasHalfWidth - halfWidth - TILE_GAP / 2
+  ];
+  var leftYs = [
+    leftPos.y,
+    Math.max(GRID_PADDING_HEIGHT, leftPos.y - canvasHalfHeight),
+    GRID_PADDING_HEIGHT
+  ];
+  var leftTo = {
+    x: canvasHalfWidth - TILE_WIDTH * 3,
+    y : GRID_PADDING_HEIGHT,
+    alpha : 0.2
+  };
+
+  var rightXs = [
+    rightPos.x,
+    Math.min(gameCanvas.width, leftPos.x + canvasHalfWidth),
+    canvasHalfWidth + halfWidth + TILE_GAP / 2
+  ];
+  var rightYs = [
+    rightPos.y,
+    Math.max(GRID_PADDING_HEIGHT, rightPos.y - canvasHalfHeight),
+    GRID_PADDING_HEIGHT
+  ];
+  var rightTo = {
+    x: canvasHalfWidth + TILE_WIDTH * 3,
+    y : GRID_PADDING_HEIGHT,
+    alpha : 0.2
+  };
+
+  var leftPositions = { x: leftPos.x, y: leftPos.y, alpha: 1 };
+  var rightPositions = { x: rightPos.x, y: rightPos.y, alpha: 1 };
+
+  var leftMove = new TWEEN.Tween(leftPositions).to(leftTo, REMOVE_MOVEMENT_TIME)
+    .easing(TWEEN.Easing.Linear.None)
+    .onStart(function() {
+      var maxSmoke = random(2, 5);
+      for (var i = 0; i < maxSmoke; i++) {
+        Particles.spawn(ParticleSmoke);
+      }
+    })
+    .onComplete(function() {
+      that.readyToRemove = true;
+    });
+
+  new TWEEN.Tween(leftPositions).to({ x: leftXs, y: leftYs }, REMOVE_BOUNCE_TIME)
+    .interpolation(TWEEN.Interpolation.Bezier)
+    .easing(TWEEN.Easing.Linear.None)
+    .chain(leftMove)
+    .start();
+
+  var rightMove = new TWEEN.Tween(rightPositions).to(rightTo, REMOVE_MOVEMENT_TIME)
+    .easing(TWEEN.Easing.Linear.None);
+
+  new TWEEN.Tween(rightPositions).to({ x: rightXs, y: rightYs }, REMOVE_BOUNCE_TIME)
+    .interpolation(TWEEN.Interpolation.Bezier)
+    .easing(TWEEN.Easing.Linear.None)
+    .chain(rightMove)
+    .start();
+
+  this.update = function(time) {};
+
+  this.draw = function() {
+    gameContext.save();
+    gameContext.globalAlpha = leftPositions.alpha;
+    gameContext.drawImage(Images[imageName], spriteX, spriteY, TILE_WIDTH, TILE_HEIGHT, leftPositions.x - halfWidth, leftPositions.y - halfHeight, TILE_WIDTH, TILE_HEIGHT);
+    gameContext.drawImage(Images[imageName], spriteX, spriteY, TILE_WIDTH, TILE_HEIGHT, rightPositions.x - halfWidth, rightPositions.y - halfHeight, TILE_WIDTH, TILE_HEIGHT);
+    gameContext.globalAlpha = 1;
+    gameContext.restore();
   };
 };
 

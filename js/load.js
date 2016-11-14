@@ -38,6 +38,8 @@ var Images = new (function() {
     button_crosspoint: 'img/button-crosspoint.png',
     button_hiragana: 'img/button-hiragana.png',
 
+    smoke: 'img/smoke.png',
+
     tutorial_1: 'img/tutorial-straight.png',
     tutorial_2: 'img/tutorial-adjacent.png',
     tutorial_3: 'img/tutorial-1-corner.png',

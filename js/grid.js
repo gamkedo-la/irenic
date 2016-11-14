@@ -497,6 +497,8 @@ var Grid = new (function() {
         tile1.match();
         tile2.match();
 
+        Particles.spawn(ParticleRemovePair, tile1.tileType, tile1.coords(), tile2.coords());
+
         Particles.spawn(ParticleLightning, path);
 
         resetTouchedTiles();
@@ -638,10 +640,10 @@ var Grid = new (function() {
     var tile2Lines = this.generateLineSegmentsFrom(_tile2.col, _tile2.row);
     // Debug draw the possible line segments from the selected tiles
 //    for (var l = 0; l < tile1Lines.length; l++) {
-//      Particles.push(new ParticleLine(tile1Lines[l], '#f00'));
+//      Particles.spawn(ParticleLine, tile1Lines[l], '#f00');
 //    }
 //    for (l = 0; l < tile2Lines.length; l++) {
-//      Particles.push(new ParticleLine(tile2Lines[l], '#00f'));
+//      Particles.spawn( ParticleLine, tile2Lines[l], '#00f');
 //    }
 
     var path = this.getIntersectingPath(tile1Lines, tile2Lines, Math.ceil((_tile1.col + _tile2.col) / 2), Math.ceil((_tile1.row + _tile2.row) / 2));
