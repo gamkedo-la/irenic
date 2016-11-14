@@ -2,7 +2,7 @@ var Particles = new (function() {
   var list = [];
 
   this.spawn = function(particleClass) {
-    list.unshift(createObjectFrom.apply(null, arguments));
+    list.push(createObjectFrom.apply(null, arguments));
   };
 
   this.update = function(delta) {
