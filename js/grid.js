@@ -282,7 +282,10 @@ var Grid = new (function() {
     var tileCoords = [];
 
     for (i = 0; i < tileIndexes.length; i++) {
-      tileCoords.push({ col: this.indexToCol(tileIndexes[i]), row: this.indexToRow(tileIndexes[i]) });
+      tileCoords.push({
+        col: this.indexToCol(tileIndexes[i]),
+        row: this.indexToRow(tileIndexes[i])
+      });
     }
 
     tileCoords.sort(function(a, b) {

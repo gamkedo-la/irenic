@@ -259,8 +259,8 @@ var ParticleRemovePair = function(tileType, p1, p2, score) {
   ];
   var leftTo = {
     x: canvasHalfWidth - TILE_WIDTH * 3,
-    y : GRID_PADDING_HEIGHT,
-    alpha : 0.2
+    y: GRID_PADDING_HEIGHT,
+    alpha: 0.2
   };
 
   var rightXs = [
@@ -275,8 +275,8 @@ var ParticleRemovePair = function(tileType, p1, p2, score) {
   ];
   var rightTo = {
     x: canvasHalfWidth + TILE_WIDTH * 3,
-    y : GRID_PADDING_HEIGHT,
-    alpha : 0.2
+    y: GRID_PADDING_HEIGHT,
+    alpha: 0.2
   };
 
   var leftPositions = { x: leftPos.x, y: leftPos.y, alpha: 1 };
