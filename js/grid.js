@@ -28,7 +28,7 @@ var Grid = new (function() {
   var totalBonus = 0;
   var totalLengthMultiplier = 0;
 
-  var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS);
+  var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS) / 2;
 
   this.start = function(_gameMode) {
     gameModeKey = _gameMode;
@@ -90,7 +90,8 @@ var Grid = new (function() {
   };
 
   var addScore = function(tile1, tile2) {
-    var amount = 25;
+    var baseAmount = 25;
+    var amount = baseAmount;
     var bonus = 0;
 
     totalTiles += 2;
@@ -113,12 +114,18 @@ var Grid = new (function() {
     var vx = tile1.col - tile2.col;
     var vy = tile1.row - tile2.row;
     var distance = Math.sqrt(vx * vx + vy * vy);
-    var multiplier = (1 + Math.pow(distance / maxDistance, 2));
+    var multiplier = (1 + Math.floor(Math.pow(distance / maxDistance, 2) * 10) / 10);
     totalLengthMultiplier += multiplier;
     amount *= multiplier;
 
     score += Math.floor(amount);
     tweenAddScore.stop().to({ score: score }, 1300).start();
+
+    return {
+      score: baseAmount,
+      bonus: bonus,
+      multiplier: Math.round(multiplier * 100) / 100
+    };
   };
 
   this.isActive = function() {
@@ -492,12 +499,12 @@ var Grid = new (function() {
       if (tile1.tileType == tile2.tileType && (path = this.validPathBetweenTiles(tile1, tile2))) {
         Sounds.play('matched_pair');
 
-        addScore(tile1, tile2);
+        var score = addScore(tile1, tile2);
 
         tile1.match();
         tile2.match();
 
-        Particles.spawn(ParticleRemovePair, tile1.tileType, tile1.coords(), tile2.coords());
+        Particles.spawn(ParticleRemovePair, tile1.tileType, tile1.coords(), tile2.coords(), score);
 
         Particles.spawn(ParticleLightning, path);
 

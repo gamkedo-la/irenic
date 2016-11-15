@@ -186,7 +186,46 @@ var ParticleSmoke = function() {
   };
 };
 
-var ParticleRemovePair = function(tileType, p1, p2) {
+var ParticleScore = function(score) {
+  var age = REMOVE_SCORE_TIME;
+  var x = gameCanvas.width / 2;
+  var y = GRID_PADDING_HEIGHT;
+  var speedY = -1;
+  var speedDecay = 0.975;
+  var alpha = 1;
+  var alphaDecay = 0.975;
+
+  var text = score.score;
+  if (0 < score.bonus) {
+    text += ' + ' + score.bonus;
+  }
+  if (1 < score.multiplier) {
+    text += ' x ' + score.multiplier;
+  }
+
+  this.update = function(delta) {
+    age -= delta;
+    this.readyToRemove = (age < 0 || y < 0);
+
+    y += speedY;
+    speedY *= speedDecay;
+    alpha *= alphaDecay;
+  };
+
+  this.draw = function() {
+    gameContext.shadowOffsetX = 0;
+    gameContext.shadowOffsetY = 0;
+    gameContext.shadowBlur = 10;
+    gameContext.shadowColor = '#333';
+    gameContext.font = gameFont;
+    gameContext.textBaseline = 'middle';
+    gameContext.textAlign = 'center';
+    drawText(gameContext, x, y, fontColor, text);
+    gameContext.shadowBlur = 0;
+  };
+};
+
+var ParticleRemovePair = function(tileType, p1, p2, score) {
   this.readyToRemove = false;
   var that = this;
 
@@ -250,6 +289,7 @@ var ParticleRemovePair = function(tileType, p1, p2) {
       for (var i = 0; i < maxSmoke; i++) {
         Particles.spawn(ParticleSmoke);
       }
+      Particles.spawn(ParticleScore, score);
     })
     .onComplete(function() {
       that.readyToRemove = true;
