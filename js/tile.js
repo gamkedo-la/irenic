@@ -134,7 +134,7 @@ var Tile = function(tileIndex) {
 
   this.match = function() {
     // @todo removal particle/animation
-    this.matching = 300;
+    this.matching = 100;
   };
 
   this.isMatched = function() {

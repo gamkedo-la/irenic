@@ -1,10 +1,8 @@
 var drawScale, aspectRatio;
-var gameDiv;
 
 function initDrawingCanvas() {
   drawCanvas = document.getElementById('drawCanvas');
   drawContext = drawCanvas.getContext('2d');
-  gameDiv = document.getElementById('gameDiv');
 
   window.addEventListener('resize', resizeWindow);
 

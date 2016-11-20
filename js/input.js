@@ -1,11 +1,11 @@
 function setupInput() {
-  drawCanvas.addEventListener('mousemove', this.updateMousePosition);
-  drawCanvas.addEventListener('mousedown', this.clickOrTouch);
-  drawCanvas.addEventListener('touchstart', this.clickOrTouch);
+  drawCanvas.addEventListener('mousemove', updateMousePosition);
+  drawCanvas.addEventListener('mousedown', clickOrTouch);
+  drawCanvas.addEventListener('touchstart', clickOrTouch);
   document.addEventListener('keypress', keyPress);
 }
 
-function setMousePos(posX, posY, button) {
+function setMousePos(posX, posY) {
   var rect = drawCanvas.getBoundingClientRect();
 
   mouse = scaleCoordinates(posX - rect.left, posY - rect.top);
