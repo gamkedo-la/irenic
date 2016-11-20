@@ -15,6 +15,7 @@ var Grid = new (function() {
   var isPaused = false;
   var canvasCenter, textBoxWidth, textBoxHeight;
   var buttonResume, buttonQuit;
+  var timeRemaining;
   var scoreDisplay = 0;
   var score = 0;
   var scoreType1, scoreType2;
@@ -62,6 +63,7 @@ var Grid = new (function() {
     numHints = gameMode.numHints;
     numShuffles = gameMode.numShuffles;
 
+    timeRemaining = gameMode.timeTotal;
     scoreDisplay = 0;
     score = 0;
     tweenDataScore.score = 0;
@@ -222,7 +224,7 @@ var Grid = new (function() {
     }
   };
 
-  this.update = function(time) {
+  this.update = function(delta) {
     if (!isActive) {
       return;
     }
@@ -233,13 +235,21 @@ var Grid = new (function() {
       return;
     }
 
+    if (settings.timer) {
+      timeRemaining -= delta;
+      if (timeRemaining <= 0) {
+        isActive = false;
+        EndGame.activate(gameModeKey, score, numTilesRemaining, totalTiles, totalBaseScore, totalBonus, totalLengthMultiplier);
+      }
+    }
+
     var updateTileIndexes = [];
     for (var i = numTiles - 1; i >= 0; i--) {
       if (!tiles[i]) {
         continue;
       }
 
-      tiles[i].update(time);
+      tiles[i].update(delta);
       if (tiles[i].readyToRemove) {
         tiles[i] = false;
         updateTileIndexes.push(i);
@@ -435,6 +445,11 @@ var Grid = new (function() {
       return;
     }
 
+    if (settings.timer) {
+      drawStrokeRect(gameContext, 479, 54, 202, 12, '#fff', 1);
+      drawFillRect(gameContext, 480, 55, Math.round(200 * timeRemaining / gameMode.timeTotal), 10, '#fff');
+    }
+
     for (var i = 0; i < numTiles; i++) {
       if (tiles[i]) {
         tiles[i].draw(time);
@@ -503,6 +518,10 @@ var Grid = new (function() {
         Sounds.play('matched_pair');
 
         var score = addScore(tile1, tile2);
+
+        if (settings.timer) {
+          timeRemaining = Math.min(gameMode.timeTotal, timeRemaining + gameMode.timeStep);
+        }
 
         tile1.match();
         tile2.match();

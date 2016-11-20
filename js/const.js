@@ -50,6 +50,8 @@ gameModes[GAME_NORMAL] = {
   extraTileCols: 0,
   extraTileRows: 0,
   gravityType: false,
+  timeTotal: 180000,
+  timeStep: 10000,
   numHints: 10,
   numShuffles: 10
 };
@@ -60,6 +62,8 @@ gameModes[GAME_MODERN] = {
   extraTileCols: GRID_COLS,
   extraTileRows: 5,
   gravityType: GRAVITY_DOWN,
+  timeTotal: 120000,
+  timeStep: 5000,
   numHints: 6,
   numShuffles: 6
 };
@@ -70,6 +74,8 @@ gameModes[GAME_ADVANCED] = {
   extraTileRows: GRID_ROWS,
   extraTileCols: 8,
   gravityType: GRAVITY_SIDES,
+  timeTotal: 60000,
+  timeStep: 2000,
   numHints: 3,
   numShuffles: 3
 };
@@ -80,6 +86,8 @@ gameModes[GAME_FUNKY] = {
   extraTileCols: 10,
   extraTileRows: 10,
   gravityType: GRAVITY_FUNKY,
+  timeTotal: 60000,
+  timeStep: 2000,
   numHints: 3,
   numShuffles: 3
 };
