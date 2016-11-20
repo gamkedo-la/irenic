@@ -89,12 +89,12 @@ var Tile = function(tileIndex) {
   };
 
   this.draw = function() {
-    if (this.readyToRemove) {
+    if (this.readyToRemove || this.matching) {
       return;
     }
 
     var imageName = 'tiles_' + settings['theme'];
-    if (this.active || this.matching || this.hintTimer) {
+    if (this.active || this.hintTimer) {
       imageName += '_active';
     }
     else if (this.hover()) {
@@ -133,8 +133,7 @@ var Tile = function(tileIndex) {
   };
 
   this.match = function() {
-    // @todo removal particle/animation
-    this.matching = 100;
+    this.matching = 400;
   };
 
   this.isMatched = function() {
