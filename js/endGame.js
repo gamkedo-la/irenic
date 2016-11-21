@@ -73,7 +73,7 @@ var EndGame = new (function() {
   this.activate = function(gameMode, score, numTilesRemaining, totalTiles, totalBaseScore, totalBonus, totalLengthMultiplier) {
     tweenBaseScore.stop().to({ baseScore: totalBaseScore }, 800);
     tweenBonus.stop().to({ bonus: totalBonus }, 800);
-    tweenMultiplier.stop().to({ lengthMultiplier: Math.round((totalLengthMultiplier / totalTiles) * 100) / 100 }, 800);
+    tweenMultiplier.stop().to({ lengthMultiplier: Math.round((totalLengthMultiplier / (totalTiles / 2)) * 100) / 100 }, 800);
     tweenScore.stop().to({ score: score }, 1200);
 
     tweenBaseScore.start();

@@ -517,7 +517,7 @@ var Grid = new (function() {
       if (tile1.tileType == tile2.tileType && (path = this.validPathBetweenTiles(tile1, tile2))) {
         Sounds.play('matched_pair');
 
-        var score = addScore(tile1, tile2);
+        var particleScore = addScore(tile1, tile2);
 
         if (settings.timer) {
           timeRemaining = Math.min(gameMode.timeTotal, timeRemaining + gameMode.timeStep);
@@ -526,7 +526,7 @@ var Grid = new (function() {
         tile1.match();
         tile2.match();
 
-        Particles.spawn(ParticleRemovePair, tile1.tileType, tile1.coords(), tile2.coords(), score);
+        Particles.spawn(ParticleRemovePair, tile1.tileType, tile1.coords(), tile2.coords(), particleScore);
 
         Particles.spawn(ParticleLightning, path);
 
