@@ -81,9 +81,11 @@ var EndGame = new (function() {
 
     if (numTilesRemaining == 0) {
       title = 'You won!';
+      Sounds.game_victory.play();
     }
     else {
       title = 'Oops! Game over...';
+      Sounds.game_lost.play();
     }
 
     // Update hiscores

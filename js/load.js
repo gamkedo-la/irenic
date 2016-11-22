@@ -86,15 +86,18 @@ var Sounds = new (function() {
     // key_theme: 'sfx/file_name'
     menu_button_hover: 'audio/Menu rollover button',
     menu_button_click: 'audio/Menu select tile',
+    game_victory: 'audio/Victory',
+    game_lost: 'audio/Tibet',
 
     matched_pair_classic: 'audio/Gong',
     matched_pair_flat: 'audio/Bamboo',
-    matched_pair_crosspoint: 'audio/Oriental',
+    matched_pair_crosspoint: 'audio/Oriental short',
+    matched_pair_hiragana: 'audio/Oriental',
 
     shuffle_classic: 'audio/Shuffle 1',
     shuffle_flat: 'audio/Shuffle 1',
-    shuffle_crosspoint: 'audio/Shuffle 1',
-    shuffle_hiragana: 'audio/Shuffle 1',
+    shuffle_crosspoint: 'audio/Shuffle 2',
+    shuffle_hiragana: 'audio/Shuffle 2',
 
     select_classic: 'audio/Button Karate',
     select_flat: 'audio/Button Karate',
