@@ -181,19 +181,16 @@ var Grid = new (function() {
       indexes.push(i);
     }
 
-    var copyIndexes = indexes.slice();
-    indexes.sort(function() {
-      return 0.5 - Math.random();
-    });
+    var randomIndexes = Randomizer.antisort(indexes, []);
     var copyTiles = shuffleTiles.slice();
-    for (i = 0; i < copyIndexes.length; i++) {
-      shuffleTiles[indexes[i]] = copyTiles[copyIndexes[i]];
-      shuffleTiles[indexes[i]].placeAtIndex(indexes[i]);
+    for (i = 0; i < indexes.length; i++) {
+      shuffleTiles[randomIndexes[i]] = copyTiles[indexes[i]];
+      shuffleTiles[randomIndexes[i]].placeAtIndex(randomIndexes[i]);
     }
 
     if (requirePair) {
       numValidPairs = this.numValidPairs();
-      if (loop > 20) {
+      if (loop > 30) {
         console.log('Bad luck at shuffling?');
         return;
       }

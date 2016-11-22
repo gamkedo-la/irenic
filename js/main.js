@@ -15,6 +15,8 @@ var mouse = {
 var screenShakeAmount = 0;
 var screenShakeAmountHalf = 0;
 
+var Randomizer = Fdrandom.hot();
+
 // Make sure redrawCanvas is called each draw-cycle by default.
 var MainLoop_setDraw = MainLoop.setDraw;
 MainLoop.setDraw = function(fun) {
