@@ -225,9 +225,17 @@ var _Button = function(x, y, width, height, callback, callbackArguments) {
 
   this.update = function() {
     this.hover = (x < mouse.x && mouse.x < x + width && y < mouse.y && mouse.y < y + height);
+    if (this.hover) {
+      if (playerHoverForButton != this) {
+        playerHoverForButton = this;
+        Sounds.menu_button_hover.play();
+      }
+    }
+
     if (this.hover && callback && mouse.button === 0) {
       mouse.x = mouse.y = -1;
       mouse.button = undefined;
+      Sounds.menu_button_click.play();
 
       if (callbackArguments) {
         if (!isArray(callbackArguments)) {

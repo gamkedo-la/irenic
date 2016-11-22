@@ -84,6 +84,9 @@ var Sounds = new (function() {
 
   var sounds = {
     // key_theme: 'sfx/file_name'
+    menu_button_hover: 'audio/Menu rollover button',
+    menu_button_click: 'audio/Menu select tile',
+
     matched_pair_classic: 'audio/Gong',
     matched_pair_flat: 'audio/Bamboo',
     matched_pair_crosspoint: 'audio/Oriental',
