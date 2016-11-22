@@ -15,7 +15,7 @@ var mouse = {
 var screenShakeAmount = 0;
 var screenShakeAmountHalf = 0;
 
-var Randomizer = Fdrandom.hot();
+var Randomizer;
 
 // Make sure redrawCanvas is called each draw-cycle by default.
 var MainLoop_setDraw = MainLoop.setDraw;
@@ -54,6 +54,8 @@ window.onload = function() {
   gameContext = gameCanvas.getContext('2d');
 
   initDrawingCanvas();
+
+  Randomizer = Fdrandom.hot();
 
   Sounds.initialize(function() {
     Images.initialize(menuInitialize);
