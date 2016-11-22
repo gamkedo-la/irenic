@@ -26,8 +26,6 @@ const REMOVE_SMOKE_TIME = 400;
 
 const KEY_ESC = 27;
 
-var playerHoverForButton;
-
 var titleFont = 'bold 34pt Steel City Comic';
 var gameFont = '20pt Steel City Comic';
 var gameFontSmall = '16pt Steel City Comic';
