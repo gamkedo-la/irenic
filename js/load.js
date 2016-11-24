@@ -90,7 +90,7 @@ var Sounds = new (function() {
 
     matched_pair_classic: 'audio/Gong',
     matched_pair_flat: 'audio/Bamboo',
-    matched_pair_crosspoint: 'audio/Oriental short',
+    matched_pair_crosspoint: 'audio/Oriental',
     matched_pair_hiragana: 'audio/Oriental',
 
     shuffle_classic: 'audio/Shuffle 1',
