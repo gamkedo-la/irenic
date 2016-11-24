@@ -73,9 +73,9 @@ var Grid = new (function() {
         scoreDisplay = Math.round(tweenDataScore.score);
       });
 
-    this.shuffle(tiles, true);
+    this.shuffleAll(tiles, true);
     if (gameMode.extraTileRows) {
-      this.shuffle(extraTiles, false);
+      this.shuffleAll(extraTiles, false);
     }
 
     isActive = true;
@@ -160,15 +160,12 @@ var Grid = new (function() {
     return result;
   };
 
-  this._shuffle = function(shuffleTiles, requirePair, loop) {
+  this._shuffle = function(shuffleTiles, requirePair) {
     if (shuffleTiles == undefined) {
       shuffleTiles = tiles;
     }
     if (requirePair == undefined) {
       requirePair = true;
-    }
-    if (loop == undefined) {
-      loop = 1;
     }
 
     var indexes = [];
@@ -180,33 +177,55 @@ var Grid = new (function() {
       }
       indexes.push(i);
     }
-
     var randomIndexes = Randomizer.antisort(indexes, []);
-    var copyTiles = shuffleTiles.slice();
-    for (i = 0; i < indexes.length; i++) {
-      shuffleTiles[randomIndexes[i]] = copyTiles[indexes[i]];
-      shuffleTiles[randomIndexes[i]].placeAtIndex(randomIndexes[i]);
+    var randomDestinations = Randomizer.antisort(indexes, []);
+    var temp;
+
+    // Grab between 20 and 50 % of the tiles and swap those
+    var grabPercentage = .2 + Randomizer.f24() * .3;
+    var maxNum = Math.floor(grabPercentage * randomIndexes.length);
+
+    for (i = 0; i < maxNum; i++) {
+      temp = shuffleTiles[randomDestinations[i]];
+      temp.placeAtIndex(randomIndexes[i]);
+
+      shuffleTiles[randomDestinations[i]] = shuffleTiles[randomIndexes[i]];
+      shuffleTiles[randomDestinations[i]].placeAtIndex(randomDestinations[i]);
+
+      shuffleTiles[randomIndexes[i]] = temp;
     }
 
     if (requirePair) {
       numValidPairs = this.numValidPairs();
-      if (loop > 30) {
-        console.log('Bad luck at shuffling?');
-        return;
-      }
-
-      if (0 < matchesToFind && numValidPairs == 0) {
-        this._shuffle(shuffleTiles, requirePair, loop + 1);
-
-        if (loop == 1) {
-          numValidPairs = this.numValidPairs();
-        }
+      if (numValidPairs == 0) {
+        this._shuffle(shuffleTiles, requirePair);
       }
     }
   };
 
-  this.shuffle = function(shuffleTiles, requirePair, loop) {
-    this._shuffle(shuffleTiles, requirePair, loop);
+  this.shuffleAll = function(shuffleTiles, requirePair) {
+    var i = shuffleTiles.length, j, temp;
+    while (i--) {
+      j = Math.floor((i + 1) * Math.random());
+      temp = shuffleTiles[j];
+      shuffleTiles[j] = shuffleTiles[i];
+      shuffleTiles[j].placeAtIndex(j);
+      shuffleTiles[i] = temp;
+      shuffleTiles[i].placeAtIndex(i);
+    }
+
+    if (requirePair) {
+      numValidPairs = this.numValidPairs();
+      if (numValidPairs == 0) {
+        this._shuffle(shuffleTiles, requirePair);
+      }
+      Sounds.play('shuffle');
+      this.animateTiles();
+    }
+  };
+
+  this.shuffle = function(shuffleTiles, requirePair) {
+    this._shuffle(shuffleTiles, requirePair);
     if (requirePair) {
       Sounds.play('shuffle');
       this.animateTiles();
