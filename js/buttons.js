@@ -72,7 +72,7 @@ var Buttons = new (function() {
 var Button = function(x, y, image, callback, showConditionCallback) {
   var width = image.width;
   var height = image.height;
-  var button = new _Button(x, y, width, height, callback);
+  var button = new _Button(x, y, width, height, false, callback);
 
   this.update = function() {
     if (showConditionCallback && !showConditionCallback()) {
@@ -94,7 +94,7 @@ var Button = function(x, y, image, callback, showConditionCallback) {
 var ButtonSetting = function(x, y, setting, onValue, imageOn, imageOff, callback, showConditionCallback) {
   var width = imageOn.width;
   var height = imageOn.height;
-  var button = new _Button(x, y, width, height, callback, [setting, onValue]);
+  var button = new _Button(x, y, width, height, false, callback, [setting, onValue]);
 
   this.update = function() {
     if (showConditionCallback && !showConditionCallback()) {

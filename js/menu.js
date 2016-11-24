@@ -220,7 +220,7 @@ var Menu = new (function() {
   };
 })();
 
-var _Button = function(x, y, width, height, callback, callbackArguments) {
+var _Button = function(x, y, width, height, clickSound, callback, callbackArguments) {
   this.hover = false;
 
   this.update = function() {
@@ -229,7 +229,9 @@ var _Button = function(x, y, width, height, callback, callbackArguments) {
     if (this.hover && callback && mouse.button === 0) {
       mouse.x = mouse.y = -1;
       mouse.button = undefined;
-      Sounds.menu_button_click.play();
+      if (clickSound) {
+        Sounds.menu_button_click.play();
+      }
 
       if (callbackArguments) {
         if (!isArray(callbackArguments)) {
@@ -247,7 +249,7 @@ var _Button = function(x, y, width, height, callback, callbackArguments) {
 var ButtonToggle = function(x, y, setting, onValue, imageOn, imageOff, callback) {
   var width = imageOn.width;
   var height = imageOn.height;
-  var button = new _Button(x, y, width, height, callback, [setting, onValue]);
+  var button = new _Button(x, y, width, height, false, callback, [setting, onValue]);
 
   this.update = function() {
     button.update();
@@ -264,7 +266,7 @@ var ButtonToggle = function(x, y, setting, onValue, imageOn, imageOff, callback)
 var ButtonText = function(x, y, label, callback, callbackArguments) {
   var width = 200;
   var height = 40;
-  var button = new _Button(x, y, width, height, callback, callbackArguments);
+  var button = new _Button(x, y, width, height, true, callback, callbackArguments);
 
   var cornerSize = 10,
     lineWidth = 4,
