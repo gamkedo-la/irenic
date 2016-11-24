@@ -18,14 +18,11 @@ var Buttons = new (function() {
   };
 
   this.draw = function() {
-    gameContext.shadowOffsetX = 0;
-    gameContext.shadowOffsetY = 0;
-    gameContext.shadowBlur = 10;
-    gameContext.shadowColor = '#333';
+    setShadow('#333', 10);
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].draw();
     }
-    gameContext.shadowBlur = 0;
+    resetShadow();
   };
 
   var buttonToggleSetting = function(setting) {

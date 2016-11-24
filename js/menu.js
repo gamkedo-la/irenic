@@ -16,8 +16,7 @@ var Menu = new (function() {
 
   var buttons = [];
   var credits = [
-    'Caspar Dunant - Team lead, coding,',
-    'Tileset Classic & Numbers',
+    'Caspar Dunant - Coding, Classic Tilesets',
     'Chris DeLeon - Tileset Crosspoint',
     'Jeremy Kenyon - Tileset Hiragana',
     'Micky Turner - Sounds'
@@ -125,7 +124,7 @@ var Menu = new (function() {
       drawTextAndBox(credits);
     }
     else if (showHiscore) {
-      _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + (2 + NUM_HISCORE) * textLineHeight, 16, 4, '#555', '#888');
+      _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + (2 + NUM_HISCORE) * textLineHeight, cornerSizeBig, lineWidth, fillStyle, strokeStyle);
 
       for (var g = 0; g < gameModeKeys.length; g++) {
         var setting_name = 'hiscore_' + gameModeKeys[g];
@@ -145,14 +144,11 @@ var Menu = new (function() {
     else if (showTutorial) {
       drawTextAndBox(tutorial);
 
-      gameContext.shadowOffsetX = 0;
-      gameContext.shadowOffsetY = 0;
-      gameContext.shadowBlur = 10;
-      gameContext.shadowColor = '#333';
+      setShadow('#333', 10);
       for (i in tutorialImages) {
         drawBitmapCenteredWithRotation(gameContext, Images[i], tutorialImages[i].x, tutorialImages[i].y);
       }
-      gameContext.shadowBlur = 0;
+      resetShadow();
     }
     else {
       for (i = 0; i < buttons.length; i++) {
@@ -164,7 +160,7 @@ var Menu = new (function() {
   };
 
   var drawTextAndBox = function(text) {
-    _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + text.length * textLineHeight, 16, 4, '#555', '#888');
+    _drawTextBoxBorder(gameContext, 100, 180, gameCanvas.width - 200, 20 + text.length * textLineHeight, cornerSizeBig, lineWidth, fillStyle, strokeStyle);
     for (var i = 0; i < text.length; i++) {
       drawText(gameContext, canvasCenter, 200 + i * textLineHeight, '#fff', text[i]);
     }
@@ -268,13 +264,6 @@ var ButtonText = function(x, y, label, callback, callbackArguments) {
   var height = 40;
   var button = new _Button(x, y, width, height, true, callback, callbackArguments);
 
-  var cornerSize = 10,
-    lineWidth = 4,
-    fontColorHover = '#d00',
-    fillStyle = '#555',
-    strokeStyle = '#888',
-    strokeStyleHover = '#d00';
-
   this.update = function() {
     button.update();
   };
@@ -284,10 +273,11 @@ var ButtonText = function(x, y, label, callback, callbackArguments) {
     gameContext.textBaseline = 'middle';
     gameContext.textAlign = 'left';
 
+    var fill = button.hover ? fillStyleHover : fillStyle;
     var color = button.hover ? fontColorHover : fontColor;
     var stroke = button.hover ? strokeStyleHover : strokeStyle;
 
-    _drawTextBoxBorder(gameContext, x, y, width, height, cornerSize, lineWidth, fillStyle, stroke);
+    _drawTextBoxBorder(gameContext, x, y, width, height, cornerSize, lineWidth, fill, stroke);
     drawText(gameContext, x + 10, y + height / 2, color, label);
   };
 };

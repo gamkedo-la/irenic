@@ -26,15 +26,12 @@ MainLoop.setDraw = function(fun) {
 
     fun(interpolationPercentage);
 
-    gameContext.shadowOffsetX = 0;
-    gameContext.shadowOffsetY = 0;
-    gameContext.shadowBlur = 6;
-    gameContext.shadowColor = '#000';
+    setShadow('#000', 6);
     gameContext.font = titleFont;
     gameContext.textBaseline = 'top';
     gameContext.textAlign = 'center';
     drawText(gameContext, gameCanvas.width / 2, 7, fontColor, 'Irenic');
-    gameContext.shadowBlur = 0;
+    resetShadow();
     redrawCanvas();
   });
 };

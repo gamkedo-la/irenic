@@ -415,10 +415,7 @@ var Grid = new (function() {
   };
 
   this.draw = function(time) {
-    gameContext.shadowOffsetX = 0;
-    gameContext.shadowOffsetY = 0;
-    gameContext.shadowBlur = 10;
-    gameContext.shadowColor = '#333';
+    setShadow('#333', 10);
     gameContext.font = gameFontSmall;
     gameContext.textAlign = 'right';
     drawText(gameContext, 180, 10, fontColor, 'Tiles remaining');
@@ -431,11 +428,11 @@ var Grid = new (function() {
     gameContext.textBaseline = 'top';
     gameContext.textAlign = 'center';
     drawText(gameContext, canvasCenter, 50, fontColor, gameMode.label);
-    gameContext.shadowBlur = 0;
+    resetShadow();
 
     if (isPaused) {
       // @todo draw pause menu
-      _drawTextBoxBorder(gameContext, 100, 100, textBoxWidth, textBoxHeight, 16, 4, '#555', '#888');
+      _drawTextBoxBorder(gameContext, 100, 100, textBoxWidth, textBoxHeight, cornerSizeBig, lineWidth, fillStyle, strokeStyle);
       drawText(gameContext, canvasCenter, 100 + textLineHeight, fontColor, 'Quit to menu?');
       buttonResume.draw();
       buttonQuit.draw();

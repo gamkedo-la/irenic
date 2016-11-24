@@ -60,10 +60,7 @@ var ParticleLightning = function(points) {
   };
 
   this.draw = function(interpolationPercentage) {
-    gameContext.shadowOffsetX = 0;
-    gameContext.shadowOffsetY = 0;
-    gameContext.shadowBlur = 10;
-    gameContext.shadowColor = '#fff';
+    setShadow('#fff', 10);
     gameContext.globalAlpha = alpha;
     gameContext.strokeStyle = '#fff';
     gameContext.lineWidth = 2;
@@ -79,7 +76,7 @@ var ParticleLightning = function(points) {
 
     // Reset context-settings
     gameContext.globalAlpha = 1;
-    gameContext.shadowBlur = 0;
+    resetShadow();
   };
 
   this.makeBolt = function(results, source, dest, num_points) {
@@ -213,15 +210,12 @@ var ParticleScore = function(score) {
   };
 
   this.draw = function() {
-    gameContext.shadowOffsetX = 0;
-    gameContext.shadowOffsetY = 0;
-    gameContext.shadowBlur = 10;
-    gameContext.shadowColor = '#333';
+    setShadow('#333', 10);
     gameContext.font = gameFont;
     gameContext.textBaseline = 'middle';
     gameContext.textAlign = 'center';
     drawText(gameContext, x, y, fontColor, text);
-    gameContext.shadowBlur = 0;
+    resetShadow();
   };
 };
 
