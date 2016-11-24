@@ -83,7 +83,7 @@ gameModes[GAME_ADVANCED] = {
   extraTileRows: GRID_ROWS,
   extraTileCols: 8,
   gravityType: GRAVITY_SIDES,
-  timeTotal: 60000,
+  timeTotal: 120000,
   timeStep: 2000,
   numHints: 3,
   numShuffles: 3
@@ -95,7 +95,7 @@ gameModes[GAME_FUNKY] = {
   extraTileCols: 10,
   extraTileRows: 10,
   gravityType: GRAVITY_FUNKY,
-  timeTotal: 60000,
+  timeTotal: 120000,
   timeStep: 2000,
   numHints: 3,
   numShuffles: 3

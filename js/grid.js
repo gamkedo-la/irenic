@@ -440,8 +440,10 @@ var Grid = new (function() {
     }
 
     if (settings.timer) {
-      drawStrokeRect(gameContext, 479, 54, 202, 12, '#fff', 1);
-      drawFillRect(gameContext, 480, 55, Math.round(200 * timeRemaining / gameMode.timeTotal), 10, '#fff');
+      setShadow('#333', 8);
+      drawStrokeRect(gameContext, 479, 54, 202, 12, fontColor, 1);
+      drawFillRect(gameContext, 480, 55, Math.round(200 * timeRemaining / gameMode.timeTotal), 10, fontColor);
+      resetShadow();
     }
 
     for (var i = 0; i < numTiles; i++) {
