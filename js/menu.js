@@ -19,7 +19,10 @@ var Menu = new (function() {
     'Caspar Dunant - Coding, Classic Tilesets',
     'Chris DeLeon - Tileset Crosspoint',
     'Jeremy Kenyon - Tileset Hiragana',
-    'Micky Turner - Sounds'
+    'Micky Turner - Sounds',
+    'Nick Baker - Music',
+    '',
+    'a game made at Gamkedo.club'
   ];
 
   var tutorial = [

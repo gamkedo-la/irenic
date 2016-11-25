@@ -1,5 +1,5 @@
 // Debug
-const DEBUG = true;
+const DEBUG = false;
 
 const TILE_WIDTH = 44;
 const TILE_HEIGHT = 55;
