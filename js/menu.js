@@ -174,6 +174,9 @@ var Menu = new (function() {
     Grid.deactivate();
     isActive = true;
 
+    Music.stop();
+    Music.play('d');
+
     MainLoop
       .stop()
       .setUpdate(this.update)

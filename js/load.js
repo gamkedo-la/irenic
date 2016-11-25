@@ -30,6 +30,8 @@ var Images = new (function() {
     button_x: 'img/button-x.png',
     button_hint_on: 'img/button-hint-on.png',
     button_hint_off: 'img/button-hint-off.png',
+    button_music_on: 'img/button-music-on.png',
+    button_music_off: 'img/button-music-off.png',
     button_shuffle_on: 'img/button-shuffle-on.png',
     button_shuffle_off: 'img/button-shuffle-off.png',
 
@@ -177,5 +179,81 @@ var Sounds = new (function() {
         return s;
       }
     };
+  };
+})();
+
+var Music = new (function() {
+  var songPlaying = '';
+  var songs = {
+    a_intro: 'audio/irenic_a_intro',
+    a_loop: 'audio/irenic_a_loop',
+    d_loop: 'audio/irenic_d_loop'
+  };
+
+  this.initialize = function(callback) {
+    var numToLoad = Object.keys(songs).length;
+    if (numToLoad == 0 && callback) {
+      callback();
+      return;
+    }
+    for (var key in songs) {
+      if (songs.hasOwnProperty(key)) {
+        this[key] = new Audio(songs[key] + Sounds.audioFormat);
+        this[key].addEventListener('canplaythrough', doneLoading);
+        this[key].load();
+        if (key.indexOf('_intro') == -1) {
+          this[key].loop = true;
+        }
+      }
+    }
+
+    function doneLoading(event) {
+      if (event) {
+        // Remove event-listener so it only fires once!
+        event.target.removeEventListener(event.type, arguments.callee);
+      }
+      numToLoad--;
+      if (numToLoad <= 0 && callback) {
+        callback();
+      }
+    }
+
+    this.play = function(song) {
+      if (!settings.music) {
+        return;
+      }
+      if (!song) {
+        if (!songPlaying) {
+          return;
+        }
+        song = songPlaying;
+      }
+
+      songPlaying = song;
+      if (this[song + '_intro']) {
+        this[song + '_intro'].play();
+        var loop = this[song + '_loop'];
+        this[song + '_intro'].addEventListener('ended', function(event) {
+          if (event) {
+            // Remove event-listener so it only fires once!
+            event.target.removeEventListener(event.type, arguments.callee);
+          }
+
+          loop.play();
+        });
+      }
+      else if (this[song + '_loop']) {
+        this[song + '_loop'].play();
+      }
+    };
+  };
+
+  this.stop = function() {
+    for (var key in songs) {
+      if (songs.hasOwnProperty(key)) {
+        this[key].currentTime = 0;
+        this[key].pause();
+      }
+    }
   };
 })();

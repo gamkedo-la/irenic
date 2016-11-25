@@ -2,12 +2,13 @@ var Buttons = new (function() {
   var buttons = [];
 
   this.initialize = function() {
+    buttons.push(new ButtonSetting(538, 0, 'music', true, Images.button_music_on, Images.button_music_off, buttonToggleMusic));
     buttons.push(new ButtonSetting(588, 0, 'sound', true, Images.button_sound_on, Images.button_sound_off, buttonToggleSetting));
     buttons.push(new ButtonSetting(638, 0, 'timer', true, Images.button_timer_on, Images.button_timer_off, buttonToggleSetting, menuIsActive));
-    buttons.push(new Button(538, 0, Images.button_hint_on, buttonHint, hasHintsRemaining));
-    buttons.push(new Button(538, 0, Images.button_hint_off, false, noHintsRemaining));
-    buttons.push(new Button(488, 0, Images.button_shuffle_on, buttonShuffle, hasShufflesRemaining));
-    buttons.push(new Button(488, 0, Images.button_shuffle_off, false, noShufflesRemaining));
+    buttons.push(new Button(488, 0, Images.button_hint_on, buttonHint, hasHintsRemaining));
+    buttons.push(new Button(488, 0, Images.button_hint_off, false, noHintsRemaining));
+    buttons.push(new Button(438, 0, Images.button_shuffle_on, buttonShuffle, hasShufflesRemaining));
+    buttons.push(new Button(438, 0, Images.button_shuffle_off, false, noShufflesRemaining));
     buttons.push(new Button(638, 0, Images.button_x, buttonQuit, gameIsActive));
   };
 
@@ -23,6 +24,16 @@ var Buttons = new (function() {
       buttons[i].draw();
     }
     resetShadow();
+  };
+
+  var buttonToggleMusic = function(setting) {
+    buttonToggleSetting(setting);
+    if (!settings[setting]) {
+      Music.stop();
+    }
+    else {
+      Music.play();
+    }
   };
 
   var buttonToggleSetting = function(setting) {

@@ -32,6 +32,9 @@ var Grid = new (function() {
   var maxDistance = Math.sqrt(GRID_COLS * GRID_COLS + GRID_ROWS * GRID_ROWS) / 2;
 
   this.start = function(_gameMode) {
+    Music.stop();
+    Music.play('a');
+
     gameModeKey = _gameMode;
     if (_gameMode && gameModes[_gameMode]) {
       gameMode = gameModes[_gameMode];

@@ -55,7 +55,9 @@ window.onload = function() {
   Randomizer = Fdrandom.hot();
 
   Sounds.initialize(function() {
-    Images.initialize(menuInitialize);
+    Music.initialize(function() {
+      Images.initialize(menuInitialize);
+    })
   });
 
   MainLoop.setMaxAllowedFPS(30);
