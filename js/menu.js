@@ -17,8 +17,8 @@ var Menu = new (function() {
   var buttons = [];
   var credits = [
     'Caspar Dunant - Coding, Classic Tilesets',
-    'Chris DeLeon - Tileset Crosspoint',
     'Jeremy Kenyon - Tileset Hiragana',
+    'Chris DeLeon and Erik Verlage - Tileset Crosspoint',
     'Micky Turner - Sounds',
     'Nick Baker - Music',
     '',
